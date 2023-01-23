@@ -1,0 +1,118 @@
+{
+  "config": {
+    "view": {"continuousWidth": 400, "continuousHeight": 300},
+    "axis": {"grid": false}
+  },
+  "layer": [
+    {
+      "data": {"name": "data-stem"},
+      "mark": {"type": "bar", "color": "#CCCCCC", "size": 2},
+      "encoding": {
+        "x": {"field": "date", "type": "temporal"},
+        "y": {"field": "follower_change", "type": "quantitative"}
+      },
+      "selection": {
+        "selector006": {
+          "type": "interval",
+          "bind": "scales",
+          "encodings": ["x"]
+        }
+      }
+    },
+    {
+      "data": {"name": "data-base"},
+      "mark": {"type": "rule", "color": "#EA0000"},
+      "encoding": {"y": {"field": "follower_change", "type": "quantitative"}}
+    },
+    {
+      "data": {"name": "data-stem"},
+      "mark": {"type": "circle", "color": "#262626"},
+      "encoding": {
+        "x": {"axis": {"title": "Tarih"}, "field": "date", "type": "temporal"},
+        "y": {
+          "axis": {"title": "Günlük değişim"},
+          "field": "follower_change",
+          "type": "quantitative"
+        }
+      },
+      "title": "Günlük takipçi değişimi"
+    },
+    {
+      "data": {"name": "data-stem"},
+      "mark": "point",
+      "encoding": {
+        "opacity": {"value": 0},
+        "x": {"field": "date", "type": "temporal"}
+      },
+      "selection": {
+        "selector005": {
+          "type": "single",
+          "nearest": true,
+          "on": "mouseover",
+          "fields": ["date"],
+          "empty": "none"
+        }
+      }
+    },
+    {
+      "data": {"name": "data-stem"},
+      "mark": {"type": "point", "color": "black", "size": 40},
+      "encoding": {
+        "opacity": {
+          "condition": {"value": 1, "selection": "selector005"},
+          "value": 0
+        },
+        "x": {"axis": {"title": "Tarih"}, "field": "date", "type": "temporal"},
+        "y": {
+          "axis": {"title": "Günlük değişim"},
+          "field": "follower_change",
+          "type": "quantitative"
+        }
+      },
+      "title": "Günlük takipçi değişimi"
+    },
+    {
+      "data": {"name": "data-stem"},
+      "mark": {"type": "rule", "color": "gray", "opacity": 0.3},
+      "encoding": {"x": {"field": "date", "type": "temporal"}},
+      "transform": [{"filter": {"selection": "selector005"}}]
+    },
+    {
+      "data": {"name": "data-stem"},
+      "mark": {"type": "rule", "color": "gray", "opacity": 0.3},
+      "encoding": {"y": {"field": "follower_change", "type": "quantitative"}},
+      "transform": [{"filter": {"selection": "selector005"}}]
+    },
+    {
+      "data": {"name": "data-stem"},
+      "mark": {"type": "text", "align": "left", "dx": 5, "dy": -10},
+      "encoding": {
+        "text": {
+          "condition": {
+            "field": "follower_change",
+            "type": "quantitative",
+            "selection": "selector005"
+          },
+          "value": " "
+        },
+        "x": {"axis": {"title": "Tarih"}, "field": "date", "type": "temporal"},
+        "y": {
+          "axis": {"title": "Günlük değişim"},
+          "field": "follower_change",
+          "type": "quantitative"
+        }
+      },
+      "title": "Günlük takipçi değişimi"
+    }
+  ],
+  "height": 350,
+  "width": 800,
+  "autosize": {"type": "fit"},
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.5.0.json",
+  "datasets": {
+    "data-stem": [
+      
+    ],
+    "data-base": [{"follower_change": 0}]
+  }
+}

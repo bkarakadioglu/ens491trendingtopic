@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <meta content="#Secim2023 Project" name="VRL Lab @ Sabanci University">
+        <meta content="disinformation, social bot detection, coordinated activity detection, dezenformasyon, sosyal bot tespiti, koordinasyon tespiti" name="keywords">
+        <meta content="Copyright (c) 2022 VRL Lab @ Sabanci University" name="Copyright">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta property="og:title" content="#Secim2023 Project @ VRL Lab">
+        <meta property="og:type" content="website">
+        <meta property="og:url" content="http://secim2023.biz">
+        <meta property="og:image" content="http://secim2023.biz/img/secim2023-logo.png">
+        <meta property="og:image:type" content="image/png">
+        <meta property="og:image:width" content="400">
+        <meta property="og:description" content="Bu platform üzerinden 2023 Cumhurbaşkanlığı Seçimleri için gerçekleştirdiğimiz dezenformasyon ve koordinasyonlu aktivite ile mücadele projesine ait raporlar ve makaleler yayınlıyoruz.">
+        <link id="page_favicon" href="img/favicon.ico" rel="icon" type="image/x-icon" />
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@6.6.6/css/flag-icons.min.css"/>
+        <script src="/js/jquery.min.js"></script>
+        <script src="/js/popper.min.js"></script>
+        <script src="/js/bootstrap.bundle.min.js"></script>
+        <script src="/js/fa-all.js" data-auto-replace-svg="nest"></script>
+        <script src="/js/multilingual.js"></script>
+
+        <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+        <link type="text/css" rel="stylesheet" href="/css/hover-min.css" />
+        <link type="text/css" rel="stylesheet" href="/css/academicons.min.css" />
+        
+        <!-- Google tag (gtag.js) -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-KMQ3V513ZY"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'G-KMQ3V513ZY');
+        </script>
+        
+        <title>#Secim2023</title>
+
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $('[data-toggle="tooltip"]').tooltip();
+                $('#header-container').load('/components/header.html', function() {
+                  setLang(getCookie('pagelang', 'en'));
+                });
+                $('#footer-container').load('/components/footer.html', function() {
+                  setLang(getCookie('pagelang', 'en'));
+                });
+            });
+            $(window).on('load', function () {
+              setLang(getCookie('pagelang', 'en'));
+            });
+        </script>
+    </head>
+
+    <body>
+
+        <div id="header-container"></div>
+        
+        <div class="container">
+            <div class="row my-5 justify-content-center">
+                <div class="col-10">
+                    
+                    <div tlang="tr">
+                        <h4>Takipçi Sayısı İzleme Sistemi</h4>
+                        <p>
+                            Sosyal medyanın önemli problemlerinden birinin başında sosyal botlar gelmektedir. Bir bilgisayar yazılımından faydalanılarak hesapların davranışlarını kontrol etmek mümkün olmaktadır ve bu otomasyon sosyal bot geliştirmek için veya gerçek bir hesaba organik olmayan görünürlük ve etkileşim kazandırmak için kullanılabilir. Bazen kullanıcının izin verdiği uygulamalar hesap sahibinin dahi haberi olmadan içerik yazmakta, paylaşmakta ve beğenebilmektedir. Ayrıca sosyal ağdaki diğer hesapları takip edip, takipten çıkarmak da bu araçlarla mümkün olabilmektedir.
+                        </p>
+                        <p>
+                            <b>Özellikle kullanıcılar kendilerini sosyal medyada daha fazla görünür kılmak amacıyla bu otomasyon araçlarına sıklıkla başvurmaktadır.</b> Bu yazımızda siyasi hesapların takipçi değişimlerinde gözlenen trendleri analiz etmek için geliştirdiğimiz aracı tanıtacağız. Proje süresince sahte takipçilerin tespiti, trend konuların manipülasyonu üzerinde hazırladığımız uygulamaları sizlere sunuyor olacağız.
+                        </p>
+                        <p>
+                            Projemiz kapsamında derlemekte olduğumuz <a href="/dataset.html">#Secim2023 veri seti</a> ile siyasilerin takipçi sayılarını günlük olarak takip etmekteyiz. Burada günlük değişimleri inceleyerek önemli olayları ve normal dışı takipçi hareketlerini de takip edebilmekteyiz.
+                        </p>
+                        <p>
+                            Öncelikle şunu belirtmemiz oldukça önemli. <b>Takipçi kazanmak ve kaybetmek bir hesabın kontrolü dışında gerçekleşiyor olabilir.</b> Örneğin aşagıdaki senaryonaların hepsinin olası olduğunu göz önüne alarak inceleme yapmalıyız
+                        </p>
+                        <p>
+                            <ul>
+                                <li>
+                                    Hesap bir kaynaktan takipçi veya etkileşim satın almış olabilir.
+                                </li>
+                                <li>
+                                    Hesabı destekleyen kişi veya kurumlar hesap sahibinin bilgisi dışında takipçi veya etkileşim satın almış olabilirler.
+                                </li>
+                                <li>
+                                    Hesabı sahte takipçiye sahip olmakla suçlamak için takipçi veya etkileşimler yaratılmış olabilir.
+                                </li>
+                                <li>
+                                    Hesap sahibi ile ilgili bir olay veya söylem sonucunda gerçek takipçiler hesabı takip etmeye veya takipten çıkmaya başlamış olabilir.
+                                </li>
+                            </ul>
+                        </p>
+                        <p>
+                            Örneğin aşağıdaki gibi 4 örnek trendi inceleyebiliriz. Her örnekte ciddi günlük değişimler gözlenmektedir. Örnek #1 için gözlemlenen durumda kazanılan takipçiler önemli bir olayı takip eden gerçek takipçiler olabileceği gibi bot hesapların takibi ile de gerçekleşmiş olabilir. Ancak Örnek #3 ve Örnek #4 ile gösterilen trendlerde kazanılan takipçilerin kaybedilmesi veya çok tutarsız bir değişim göstermesi dikkat edilmesi gereken bir durumdur. Aynı şekilde Örnek #2 düzenli takipçi kazanmaktadır ancak bu takipçilerin aktiviteleri ve değişimin hesabın büyüklüğüne oranı da dikkatle incelenmelidir.
+                        </p>
+
+                        <img src="./sample-charts-tr.png" width="100%">
+
+                        <p>
+                            Bu sebeple geliştirdiğimiz takipçi sayısı izleme sistemin göstermiş olduğu sonucları daha iyi yorumlamak için söylem inceleme, ağ analizi ve bot tespit sistemleri de geliştirerek daha detaylı çalışmalar yapmaktayız.
+                        </p>
+                            
+                        <div class="alert alert-primary" role="alert" width="100%">
+                            <i class="fa fa-chart-bar"></i>&nbsp;
+                            <a href="/apps/follower-change/">
+                                <b>Takipçi Sayısı İzleme Sistemi</b> için linki takip ediniz.
+                            </a>
+                        </div>
+                    </div>
+
+
+                    <div tlang="en">
+                        <h4>Follower count monitoring system</h4>
+                        <p>
+                            Social bots pose an important problem to social media platforms. These are accounts partially or fully controlled by automation softwares. Sometimes, users provide access to 3rd-party applications to write, share and like content on their behalf and these applications can act without the knowledge of the account’s owner. These applications can also automate activities such as following and unfollowing other accounts.
+                        </p>
+                        <p>
+                            <b>These automation tools are often used to increase visibility and amplify the reach of a content.</b> In this article, we will introduce the tool that we developed to analyze the trends in followers changes. During the project, we will regularly release new tools on the detection of fake followers and manipulation of trend topics.
+                        </p>
+                        <p>
+                            We are tracking the number of followers of political figures through the <a href="/dataset.html">#Secim2023 dataset</a> that we are compiling as part of our project. Using this dataset we can track changes of followers daily to point to natural or abnormal growth patterns surrounded by important events.
+                        </p>
+                        <p>
+                            First of all, we must mention a very important point: <b>Gaining and losing followers can happen outside the control of an account.</b> For example, we should consider that all of the following scenarios are possible:
+                        </p>
+                        <p>
+                            <ul>
+                                <li>The account may have purchased followers or engagement from a source.</li>
+                                <li>Individuals or organizations supporting the account may have purchased followers or engagement without the knowledge of the account owner.</li>
+                                <li>Followers or engagement may have been created to accuse the account of having fake followers.</li>
+                                <li>As a result of an event or statement related to the account owner, real followers may have started following or unfollowing the account.</li>
+                            </ul>
+                        </p>
+                        <p>
+                            We investigated four exemplary patterns of daily follower changes. All of these examples demonstrate noteworthy changes. Changes observed for Sample #1 may be due to organic engagement following an important external event or inorganic bot engagement. However, Samples #3 and #4 points significant gains and losses and requires additional attention. Also, Sample #2 has consistent growth but those numbers should be investigated with respect to overall follower counts.
+                        </p>
+
+                        <img src="./sample-charts-en.png" width="100%">
+
+                        <p>
+                            To better understand the results shown by our follower count monitoring system, we are also developing discourse analysis, network analysis, and bot detection systems.
+                        </p>
+
+                        <div class="alert alert-primary" role="alert" width="100%">
+                            <i class="fa fa-chart-bar"></i>&nbsp;
+                            <a href="/apps/follower-change/">
+                                Follow the link for <b>Follower number tracking system</b>.
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="footer-container"></div>
+
+    </body>
+</html>

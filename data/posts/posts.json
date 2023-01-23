@@ -1,0 +1,101 @@
+[
+    {
+        "id": "sarkac-post",
+        "isVisible": true,
+        "languages": ["tr"],
+        "url": "/posts/230123/",
+        "type": "Report",
+        "date": "23/01/2023",
+        "img": "schema.jpg",
+        "title": {
+            "en": "Post for Sarkaç on social bots and disinformation campaigns",
+            "tr": "Sarkaç için `Sosyal botlar ve dezenformasyon kampanyaları nedir?`"
+        },
+        "description": {
+            "en": "This post written for Turkish audience",
+            "tr": "Bilim Akademisinin çevirimiçi yayını olan Sarkaç'ta yayınlanan yazımız"
+        },
+        "links": [
+            {
+                "type": "obp",
+                "text": "Sarkac",
+                "url": "https://sarkac.org/2023/01/sosyal-botlar-ve-dezenformasyon-kampanyalari-nedir/"
+            }
+        ]
+    },
+
+    {
+        "id": "follower-change",
+        "isVisible": true,
+        "languages": ["tr", "en"],
+        "url": "/posts/221226/",
+        "type": "Analysis",
+        "date": "26/12/2022",
+        "img": "thumbnail.png",
+        "title": {
+            "en": "Follower count monitoring system",
+            "tr": "Takipçi Sayısı İzleme Sistemi"
+        },
+        "description": {
+            "en": "Automation tools are often used to increase visibility and amplify the reach of a content. In this article, we will introduce the tool that we developed to analyze the trends in followers changes.automation tools are often used to increase visibility and amplify the reach of a content. In this article, we will introduce the tool that we developed to analyze the trends in followers changes.",
+            "tr": "Kullanıcılar kendilerini sosyal medyada daha fazla görünür kılmak amacıyla bu otomasyon araçlarına sıklıkla başvurmaktadır. Bu yazımızda siyasi hesapların takipçi değişimlerinde gözlenen trendleri analiz etmek için geliştirdiğimiz aracı tanıtacağız."
+        },
+        "links": [
+            {
+                "type": "open-data",
+                "text": "App",
+                "url": "/apps/follower-change/"
+            }
+        ]
+    },
+
+    {
+        "id": "imamoglu-case",
+        "isVisible": true,
+        "languages": ["tr"],
+        "url": "/posts/221219/",
+        "type": "Analysis",
+        "date": "19/12/2022",
+        "img": "ekrem_imamoglu-profile.png",
+        "title": {
+            "en": "Ekrem Imamoglu (Mayor of Istanbul) Case on December 15th, 2022",
+            "tr": "15 Aralık 2022, Ekrem Imamoglu Davası"
+        },
+        "description": {
+            "en": "We analyzed the online conversation around Ekrem Imamoglu.",
+            "tr": "Ekrem İmamoğlu hakkında Twitter'da yazılanları inceledik."
+        },
+        "links": []
+    },
+
+    {   
+        "id": "secim-dataset",
+        "isVisible": true,
+        "languages": ["tr", "en"],
+        "url": "/posts/221122/",
+        "type": "Dataset",
+        "date": "22/11/2022",
+        "img": "secim-dataset.png",
+        "title": {
+            "en": "Preprint for #Secim2023 Dataset",
+            "tr": "#Secim2023 Veriseti Ön Baskı"
+        },
+        "description": {
+            "en": "We have just published our first dataset about Turkish Presidential Elections in 2023.",
+            "tr": "İlk yayınımızı 2023 Türkiye Başkanlık Seçimleri üzerine veriseti paylaşarak yaptık."
+        },
+        "links": [
+            {
+                "type": "dataverse",
+                "text": "Dataverse",
+                "url": "https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi%3A10.7910%2FDVN%2FQJA1ZW"
+            },
+            {
+                "type": "arxiv",
+                "text": "ArXiv",
+                "url": "https://arxiv.org/abs/2211.13121"
+            }
+        ]
+    }
+
+]

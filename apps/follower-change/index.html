@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <meta content="#Secim2023 Project" name="VRL Lab @ Sabanci University">
+        <meta content="disinformation, social bot detection, coordinated activity detection, dezenformasyon, sosyal bot tespiti, koordinasyon tespiti" name="keywords">
+        <meta content="Copyright (c) 2022 VRL Lab @ Sabanci University" name="Copyright">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta property="og:title" content="#Secim2023 Project @ VRL Lab">
+        <meta property="og:type" content="website">
+        <meta property="og:url" content="http://secim2023.biz">
+        <meta property="og:image" content="http://secim2023.biz/img/secim2023-logo.png">
+        <meta property="og:image:type" content="image/png">
+        <meta property="og:image:width" content="400">
+        <meta property="og:description" content="Bu platform üzerinden 2023 Cumhurbaşkanlığı Seçimleri için gerçekleştirdiğimiz dezenformasyon ve koordinasyonlu aktivite ile mücadele projesine ait raporlar ve makaleler yayınlıyoruz.">
+        <link id="page_favicon" href="/img/favicon.ico" rel="icon" type="image/x-icon" />
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@6.6.6/css/flag-icons.min.css"/>
+        <script src="/js/jquery.min.js"></script>
+        <script src="/js/popper.min.js"></script>
+        <script src="/js/bootstrap.bundle.min.js"></script>
+        <script src="/js/fa-all.js" data-auto-replace-svg="nest"></script>
+        <script src="/js/multilingual.js"></script>
+        <script src="/js/vrllog.js"></script>
+
+        <link rel="stylesheet" href="/css/bootstrap.min.css">
+        <link type="text/css" rel="stylesheet" href="/css/hover-min.css" />
+        <link type="text/css" rel="stylesheet" href="/css/academicons.min.css" />
+        
+        
+        <title>#Secim2023</title>
+
+        <script type="text/javascript">
+
+            function drawCharts(){
+                $.getJSON('./template-chart.json',
+                    function (def) {
+                        var polCount = $('.followerchart').length;
+                        //$('.followerchart').each(function(i, obj) {
+                        for (let i = 0;  i < $('.followerchart').length; i++) {
+                            var obj = $('.followerchart')[i];
+                            var pdata = JSON.parse(JSON.stringify(def));
+                            console.log($(obj).attr('id'));
+                            var data = JSON.parse($(obj).attr('data'));
+
+                            var newdata = [];
+                            for (let j = 1; j < data.length; j++) {
+                                newdata.push({
+                                    "date": data[j][0],
+                                    "follower_count": data[j][1],
+                                    "follower_change": data[j][1] - data[j-1][1],
+                                })
+                            }
+
+                            pdata["datasets"]["data-stem"] = newdata;
+                            vegaEmbed('#live'+$(obj).attr('id') , pdata).then(function(result) {}).catch(console.error);
+                            $('#btn'+$(obj).attr('id')).hide();
+                        };
+                    }).done(function() {
+                        $('#wait-message').hide();
+                        setLang(getCookie('pagelang', 'tr'));
+                    });
+            }
+
+            $(document).ready(function () {
+                setLang(getCookie('pagelang', 'tr'));
+                $('#wait-message').hide();
+                $('[data-toggle="tooltip"]').tooltip();
+                $('#header-container').load('/components/header.html', function() {
+                  setLang(getCookie('pagelang', 'tr'));
+                });
+                $('#footer-container').load('/components/footer.html', function() {
+                  setLang(getCookie('pagelang', 'tr'));
+                });
+                $("#btnDrawAll").button().click(function(){
+                  $('#wait-message').show();
+                  vrllogger.event("event", 
+                        {
+                            "code":"CHART_DRAW", 
+                            "lang":getCookie('pagelang', 'tr'),
+                            "uid":getCookie('uid'),
+                            "data":{"id": "*"}
+                        });
+                  drawCharts();
+                }); 
+                vrllogger.event("log", {
+                    "code":"PAGE_INIT", 
+                    "lang":getCookie('pagelang', 'tr'),
+                    "uid":getCookie('uid')
+                });
+            });
+            $(window).on('load', function () {
+              setLang(getCookie('pagelang', 'tr'));
+              //drawCharts();
+            });
+        </script>
+		
+        <!-- Import Vega & Vega-Lite (does not have to be from CDN) -->
+        <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+        <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
+        <!-- Import vega-embed -->
+        <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+        
+        <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.2.30/vue.global.min.js"></script>-->
+        <script src="/js/vue.global.min.js"></script>
+
+        <script type="module">
+            //import pdata from './user_followers.json' assert { type: "json" };
+            //import chart from './template-chart.json' assert { type: "json" };
+
+            //var pdata = cdata.slice(0,10);
+
+            const { createApp, ref, computed } = Vue;
+            createApp({
+              data() {
+                return {
+                    ascending: false,
+                    sortBy: 'nfollower',
+                    searchValue: '',
+                    politicians: [],
+                    chart: null,
+                }
+              },
+              beforeMount: function() {
+                    this.getJson();
+              },
+              methods: {
+                getJson: function(){
+                    $.getJSON('./user_followers.json',function(json){
+                        this.politicians = json;
+                    }.bind(this));
+
+                    $.getJSON('./template-chart.json',function(json){
+                        this.chart = json;
+                    }.bind(this));
+                },
+                redraw() {
+                  let cid = event.currentTarget.id.replace('btnchart-','');
+                  vrllogger.event("event", 
+                        {
+                            "code":"CHART_DRAW", 
+                            "lang":getCookie('pagelang', 'tr'),
+                            "uid":getCookie('uid'),
+                            "data":{"id": cid}
+                        });
+
+                  console.log(cid);
+                  for (let i = 0;  i < this.politicians.length; i++) {
+                    if (this.politicians[i].id == cid){
+                        console.log('Match found');
+                        var data = this.politicians[i]['followers'];
+                        var chartd = this.chart;
+                        var newdata = [];
+                        for (let j = 1; j < data.length; j++) {
+                            newdata.push({
+                                "date": data[j][0],
+                                "follower_count": data[j][1],
+                                "follower_change": data[j][1] - data[j-1][1],
+                            })
+                        }
+
+                        chartd["datasets"]["data-stem"] = newdata;
+                        vegaEmbed('#livechart-'+cid , chartd).then(function(result) {}).catch(console.error);
+                        $('#btnchart-'+cid).hide();
+
+                    }
+                  }
+                  setLang(getCookie('pagelang', 'tr'));
+                }
+              },
+              computed: {
+                filteredData(){
+                    console.log('Working')
+                    let tempPol = this.politicians
+
+                    // Process search input
+                    if (this.searchValue != '' && this.searchValue) {
+                        tempPol = tempPol.filter((item) => {
+                            return (item.name + item.screen_name + item.party)
+                                .toUpperCase()
+                                .includes(this.searchValue.toUpperCase())
+                        })
+                    }
+
+                    tempPol = tempPol.sort((a, b) => {
+                        if (this.sortBy == 'alphabetically') {
+                            let fa = a.name.toLowerCase(), fb = b.name.toLowerCase()
+                            if (fa < fb) {
+                                return -1
+                            }
+                            if (fa > fb) {
+                                return 1 
+                            }
+                            return 0
+                        } else if (this.sortBy == 'nfollower') {
+                            let fa = a.followers[a.followers.length-1][1]
+                            let fb = b.followers[b.followers.length-1][1]
+                            return fa - fb
+                        } else if (this.sortBy == 'followerchance') {
+                            let fa = a.followers[a.followers.length-1][1] - a.followers[0][1]
+                            let fb = b.followers[b.followers.length-1][1] - b.followers[0][1]
+                            return fa - fb
+                        } else if (this.sortBy == 'followermaxgain') {
+                            let fa = 0, fb = 0
+                            for (let i = 1; i < a.followers.length; i++) {
+                                if (a.followers[i][1] - a.followers[i-1][1] > fa) {
+                                    fa = a.followers[i][1] - a.followers[i-1][1]
+                                }
+                            }
+                            for (let i = 1; i < b.followers.length; i++) {
+                                if (b.followers[i][1] - b.followers[i-1][1] > fb) {
+                                    fb = b.followers[i][1] - b.followers[i-1][1]
+                                }
+                            }
+                            return fa - fb
+                        } else if (this.sortBy == 'followermaxloss') {
+                            let fa = 0, fb = 0
+                            for (let i = 1; i < a.followers.length; i++) {
+                                if (a.followers[i][1] - a.followers[i-1][1] < fa) {
+                                    fa = a.followers[i][1] - a.followers[i-1][1]
+                                }
+                            }
+                            for (let i = 1; i < b.followers.length; i++) {
+                                if (b.followers[i][1] - b.followers[i-1][1] < fb) {
+                                    fb = b.followers[i][1] - b.followers[i-1][1]
+                                }
+                            }
+                            return fb - fa
+                        }
+
+                    })
+
+                    // Show sorted array in descending or ascending order
+                    if (!this.ascending) {
+                        tempPol.reverse()
+                    }
+                    setLang(getCookie('pagelang', 'tr'));
+                    return tempPol
+                }
+              }
+            }).mount('#app');
+
+        </script>
+
+        <!-- Google tag (gtag.js) -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-KMQ3V513ZY"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'G-KMQ3V513ZY');
+        </script>
+
+    </head>
+
+    <body>
+
+        <div id="header-container"></div>
+        
+        <div class="container">
+            <div class="row my-5 justify-content-center" >
+                <div class="col-10">
+                    <div id="app">
+
+                        <form class="border border-secondary rounded" style="margin-bottom: 2em; padding:1em;">
+                            <div class="mb-3">
+                            <h3>
+                                <i class="fa fa-chart-bar"></i>&nbsp;
+                                <span tlang="en">Analysis of Follower Number Changes</span>
+                                <span tlang="tr">Takipçi Sayısı Değişim Analizi</span>
+                                <!--https://codepen.io/thaekeh/pen/PoGJRKQ-->
+                            </h3>
+                            </div>
+                            <div class="mb-3">
+                                <div tlang="en">
+                                    <select class="form-select" name="sortBy" id="select" v-model="sortBy">
+                                      <option value="alphabetically">Alphabetically</option>
+                                      <option selected value="nfollower"># of followers</option>
+                                      <option value="followerchance">Follower change</option>
+                                      <option value="followermaxgain">Max gain a day</option>
+                                      <option value="followermaxloss">Max loss a day</option>
+                                    </select>
+                                </div>
+                                <div tlang="tr">
+                                    <select class="form-select" name="sortBy" id="select" v-model="sortBy">
+                                      <option value="alphabetically">Alfabetik</option>
+                                      <option value="nfollower">Takipçi Sayısı</option>
+                                      <option value="followerchance">Takipçi değişimi</option>
+                                      <option value="followermaxgain">Günlük maksimum artış</option>
+                                      <option value="followermaxloss">Günlük maksimum kayıp</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <div tlang="en">
+                                    <input class="form-control" type="text" v-model="searchValue" placeholder="Search by name, screen_name, party" id="search-input"></input>
+                                </div>
+                                <div tlang="tr">
+                                    <input class="form-control" type="text" v-model="searchValue" placeholder="İsim, kullanıcı adı veya parti ile ara" id="search-input"></input>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <div class="btn-group me-2" role="group">
+                                <button type="button" class="btn btn-outline-secondary" v-on:click="ascending = !ascending" class="sort-button">
+                                    <i v-if="ascending" class="fa fa-sort-up"></i>
+                                    <i v-else class="fa fa-sort-down"></i>&nbsp;
+                                    <span tlang="en">Order</span>
+                                    <span tlang="tr">Sırala</span>
+                                </button>
+                                <button id="btnDrawAll" type="button" class="btn btn-outline-secondary">
+                                    <i class="fa fa-sync"></i>&nbsp;
+                                    <span tlang="en">Plot all charts</span>
+                                    <span tlang="tr">Tüm grafikleri hazırla</span>
+                                </button>
+                                </div>
+                            </div>
+                        </form>
+
+                      <div id="wait-message" class="alert alert-light" role="alert">
+                        <h2>
+                          <span class="spinner-grow" role="status" aria-hidden="true"> </span>
+                          <span tlang="en"> Please wait while page loading</span>
+                          <span tlang="tr"> Sayfa hazırlanırken lütfen bekleyiniz</span>
+                        </h2>
+                      </div>
+
+                      <div class="card" style="margin-bottom:1em;" v-for="pol in filteredData" :key="pol.screen_name">
+                        <div class="card-header">
+                            <div class="row g-0">
+                                <div class="col-md-8">
+                                <h5 class="card-title">
+                                    <b>{{ pol.name }} </b> 
+                                    (<a v-bind:href="'https://twitter.com/' + pol.screen_name" target="_blank">@{{ pol.screen_name }}</a>)
+                                    
+                                </h5>
+                                <h6 class="card-subtitle mb-2 text-muted">
+                                    <span tlang="en"># of followers:</span>
+                                    <span tlang="tr">Takipçi Sayısı:</span>
+                                    {{ pol.followers[pol.followers.length-1][1] }}
+                                </h6>
+                                </div>
+                            
+                                <div class="col-md-4">
+                                    <img v-bind:src="'/img/party-' + pol.party.toLowerCase().replace('i̇','i') + '-logo.png'" onError="this.onerror=null;this.src='/img/noimage.png';" style="height:50px;" class="float-end">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <button @click="redraw" v-bind:id="'btnchart-' + pol.id" type="button" class="btn btn-secondary">
+                                <span tlang="en">Prepare chart</span>
+                                <span tlang="tr">Grafik hazırla</span>
+                            </button>
+                            <div class="followerchart" v-bind:id="'chart-' + pol.id" :data=JSON.stringify(pol.followers)></div>
+                            <div v-bind:id="'livechart-' + pol.id"></div>
+                        </div>
+                      </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+		
+        <div id="footer-container"></div>
+
+    </body>
+</html>

@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <meta content="#Secim2023 Project" name="VRL Lab @ Sabanci University">
+        <meta content="disinformation, social bot detection, coordinated activity detection, dezenformasyon, sosyal bot tespiti, koordinasyon tespiti" name="keywords">
+        <meta content="Copyright (c) 2022 VRL Lab @ Sabanci University" name="Copyright">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta property="og:title" content="#Secim2023 Project @ VRL Lab">
+        <meta property="og:type" content="website">
+        <meta property="og:url" content="http://secim2023.biz">
+        <meta property="og:image" content="http://secim2023.biz/img/secim2023-logo.png">
+        <meta property="og:image:type" content="image/png">
+        <meta property="og:image:width" content="400">
+        <meta property="og:description" content="Bu platform üzerinden 2023 Cumhurbaşkanlığı Seçimleri için gerçekleştirdiğimiz dezenformasyon ve koordinasyonlu aktivite ile mücadele projesine ait raporlar ve makaleler yayınlıyoruz.">
+        <link id="page_favicon" href="img/favicon.ico" rel="icon" type="image/x-icon" />
+
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@6.6.6/css/flag-icons.min.css"/>
+        <script src="/js/jquery.min.js"></script>
+        <script src="/js/popper.min.js"></script>
+        <script src="/js/bootstrap.bundle.min.js"></script>
+        <script src="/js/underscore-min.js"></script>
+        <script src="/js/fa-all.js" data-auto-replace-svg="nest"></script>
+        <script src="/js/multilingual.js"></script>
+        <script src="/js/vrllog.js"></script>
+
+        
+        
+        <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+        <link type="text/css" rel="stylesheet" href="/css/hover-min.css" />
+        <link type="text/css" rel="stylesheet" href="/css/academicons.min.css" />
+        
+        <!-- Google tag (gtag.js) -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-KMQ3V513ZY"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'G-KMQ3V513ZY');
+        </script>
+        
+        <title>#Secim2023</title>
+
+        <script type="text/javascript">
+
+            function drawCard(post){
+
+                langOptions = ['en', 'tr'];
+
+                divStr = '<div class="col-sm-12 col-md-6 col-lg-4 my-3"><div class="card"><img class="card-img-top img-fluid" src="' + post['url'] + post['img'] + '"/>';
+                divStr += '<div class="card-body col p-4 d-flex flex-column position-static">';
+                
+                /*if (post['type'] == "Analysis") {
+                    divStr += '<strong class="d-inline-block mb-2 text-success"><span tlang="en">Analysis</span><span tlang="tr">Analiz</span></strong>'
+                } else {
+                    divStr += '<strong class="d-inline-block mb-2 text-primary"><span tlang="en">Dataset</span><span tlang="tr">Veriseti</span></strong>'
+                }*/
+
+                divStr += '<h5 class="mb-0">';
+                for (var i=0; i < langOptions.length; i++){
+                    divStr += '<span tlang="' + [langOptions[i]] + '">' + post['title'][langOptions[i]] + '</span>';
+                }
+                divStr += '</h5>';
+
+                divStr += '<small class="text-muted mt-2">' + post['date'] + '</small>';
+
+                divStr += '<p class="card-text mb-auto mt-2">';
+                for (var i=0; i < langOptions.length; i++){
+                    divStr += '<span tlang="' + [langOptions[i]] + '">' + post['description'][langOptions[i]] + '</span>';
+                }
+                divStr += '</p>';
+
+                divStr += '<a href="' + post['url'] + '" class="btn btn-primary stretched-link mt-4"><span tlang="en">Read Blog</span><span tlang="tr">Detaylar</span></a></div></div></div>';
+
+                return divStr;
+            }
+
+            function createBlogPosts(posts) {
+
+                var mstr = '<div class="container"><div class="row gy-3 my-3">';
+
+                for (var i=0; i < posts.length; i++){
+                    if (posts[i]['isVisible']) {
+                        mstr += drawCard(posts[i]);
+                    }
+                }
+
+                mstr += '</div></div></div>';
+
+                $('#blog-posts-container').append(mstr);
+
+            }
+
+            $(document).ready(function () {
+                $('[data-toggle="tooltip"]').tooltip();
+                $('#header-container').load('/components/header.html', function() {
+                  setLang(getCookie('pagelang', 'tr'));
+                });
+                $('#footer-container').load('/components/footer.html', function() {
+                  setLang(getCookie('pagelang', 'tr'));
+                });
+
+                $.getJSON('data/posts/posts.json',
+                    function (json) {
+                        createBlogPosts(json);
+                        setLang(getCookie('pagelang', 'tr'));
+                });
+
+                vrllogger.event("log", {
+                    "code":"PAGE_INIT", 
+                    "lang":getCookie('pagelang', 'tr'),
+                    "uid":getCookie('uid')
+                });
+            });
+            $(window).on('load', function () {
+              setCookieIfNotExist('uid')
+              setLang(getCookie('pagelang', 'tr'));
+            });
+        </script>
+
+    </head>
+
+    <body data-spy="scroll" data-target=".bs-docs-sidebar">
+
+        
+        <div id="header-container"></div>
+
+        
+
+        <div class="container">
+            <div class="px-4 py-5 my-5 text-center border-bottom">
+                <!--<img class="d-block mx-auto mb-4" src="img/vrllab-logo.png" alt="" width="144" height="144">-->
+                <h1 class="display-5 fw-bold">#Secim2023</h1>
+                <div class="col-lg-6 mx-auto mb-5">
+                    <p class="lead mb-4" tlang="en">
+                        This platform shares data science insights and reports from our disinformation and coordinated activity detection project on upcoming 2023 Turkish Presidential Election.
+                    </p>
+                    <p class="lead mb-4" tlang="tr">
+                        Bu platform üzerinden 2023 Cumhurbaşkanlığı Seçimleri için gerçekleştirdiğimiz dezenformasyon ve koordinasyonlu aktivite ile mücadele projesine ait raporlar ve makaleler yayınlıyoruz.
+                    </p>
+                    <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+                        <a href="/publications.html" type="button" class="btn btn-outline-secondary btn-lg px-4 gap-3">
+                            <span tlang="en">See Latest Publication</span>
+                            <span tlang="tr">Son Yayınlarımız</span>
+                        </a>
+                        <a href="/dataset.html" type="button" class="btn btn-outline-secondary btn-lg px-4">
+                            <span tlang="en">Secim2023 Dataset</span>
+                            <span tlang="tr">Secim2023 Veriseti</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row my-5 justify-content-center">
+                <div class="col-12 text-center">
+                    <h3>
+                        <span tlang="en">Latest Blog Posts</span>
+                        <span tlang="tr">Son Paylaşılanlar</span>
+                    </h3>
+                </div>
+            </div>
+        </div>
+
+        <div id="blog-posts-container"></div>
+
+        <div id="footer-container"></div>
+
+    </body>
+</html>

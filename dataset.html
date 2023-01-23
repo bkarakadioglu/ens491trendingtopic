@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <meta content="#Secim2023 Project" name="VRL Lab @ Sabanci University">
+        <meta content="disinformation, social bot detection, coordinated activity detection, dezenformasyon, sosyal bot tespiti, koordinasyon tespiti" name="keywords">
+        <meta content="Copyright (c) 2022 VRL Lab @ Sabanci University" name="Copyright">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta property="og:title" content="#Secim2023 Project @ VRL Lab">
+        <meta property="og:type" content="website">
+        <meta property="og:url" content="http://secim2023.biz">
+        <meta property="og:image" content="http://secim2023.biz/img/secim2023-logo.png">
+        <meta property="og:image:type" content="image/png">
+        <meta property="og:image:width" content="400">
+        <meta property="og:description" content="Bu platform üzerinden 2023 Cumhurbaşkanlığı Seçimleri için gerçekleştirdiğimiz dezenformasyon ve koordinasyonlu aktivite ile mücadele projesine ait raporlar ve makaleler yayınlıyoruz.">
+        <link id="page_favicon" href="img/favicon.ico" rel="icon" type="image/x-icon" />
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@6.6.6/css/flag-icons.min.css"/>
+        <script src="/js/jquery.min.js"></script>
+        <script src="/js/popper.min.js"></script>
+        <script src="/js/bootstrap.bundle.min.js"></script>
+        <script src="/js/fa-all.js" data-auto-replace-svg="nest"></script>
+        <script src="/js/multilingual.js"></script>
+        <script src="/js/vrllog.js"></script>
+        
+        <!-- Google tag (gtag.js) -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-KMQ3V513ZY"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'G-KMQ3V513ZY');
+        </script>
+
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+
+        <link type="text/css" rel="stylesheet" href="/css/hover-min.css" />
+        <link type="text/css" rel="stylesheet" href="/css/academicons.min.css" />
+        
+        <title>#Secim2023 | Turkish Presidential Elections</title>
+
+        <script type="text/javascript">
+            $(document).ready(function () {
+                vrllogger.event("log", {"code":"PAGE_INIT", "lang":getCookie('pagelang', 'tr')});
+                $('[data-toggle="tooltip"]').tooltip();
+                $('#header-container').load('/components/header.html', function() {
+                  setLang(getCookie('pagelang', 'en'));
+                });
+                $('#footer-container').load('/components/footer.html', function() {
+                  setLang(getCookie('pagelang', 'en'));
+                });
+            });
+            $(window).on('load', function () {
+              setLang(getCookie('pagelang', 'en'));
+            });
+        </script>
+    </head>
+
+    <body>
+
+        <div id="header-container"></div>
+
+        <div class="container">
+            <div class="row my-5 justify-content-center">
+                
+                <div class="col-10" tlang="en">
+                    <h4>#Secim2023: First Public Dataset for Studying Turkish General Election</h4>
+                    <p>
+                        <b>Abstract</b>: In the context of Turkey's upcoming parliamentary and presidential elections ("seçim" in Turkish), social media is playing an important role in shaping public debate. The increasing engagement of citizens on social media platforms has led to the growing use of social media by political actors. It is of utmost importance to capture the upcoming Turkish elections, as social media is becoming an essential component of election propaganda, political debates, smear campaigns, and election manipulation by domestic and international actors. We provide a comprehensive dataset for social media researchers to study the upcoming election, develop tools to prevent online manipulation, and gather novel information to inform the public. We are committed to continually improving the data collection and updating it regularly leading up to the election. Using the Secim2023 dataset, researchers can examine the social and communication networks between political actors, track current trends, and investigate emerging threats to election integrity.
+                    </p>
+                    <p>
+                        <u>Information about preprint:</u> Najafi, Ali, Nihat Mugurtay, Ege Demirci, Serhat Demirkiran, Huseyin Alper Karadeniz, and Onur Varol. "# Secim2023: First Public Dataset for Studying Turkish General Election." <a href="https://arxiv.org/abs/2211.13121" target="_blank">arXiv preprint arXiv:2211.13121</a> (2022).
+                    </p>
+                </div>
+
+                <div class="col-10" tlang="tr">
+                    <h4>Verisetimiz ve Açık Veri Politikası</h4>
+                    <p>
+                        Twitter’da yer alan trend konu başlıkları, belli konuları şekillendirdiğimiz bilgi akışları, farklı partilerden siyasetçilerin takip ve takipçi ağı ve Türkiye’deki medya kuruluşlarını odağına almaktadır. Laboratuvarımız açık veri ilkesini benimsemektedir. Verisetimiz Github ve Harvard Dataverse üzerinden araştırmacıların kullanımına açık olmak üzere aylık olarak güncellenmektedir. Dahası, temel akademik yayınlarında yer alan analizlerin nasıl yapıldığını gösteren replikasyon kodlarını araştırmacılar ile paylaşmaktayız.Bu anlamda çalışmamızın Türkiye’de sosyal ve siyasal araştırmalara programlamalı alanda katkı yapacağınız inanıyoruz.
+                    </p>
+                    <p>
+                        <u>Makaleye ait referans:</u> Najafi, Ali, Nihat Mugurtay, Ege Demirci, Serhat Demirkiran, Huseyin Alper Karadeniz, and Onur Varol. "# Secim2023: First Public Dataset for Studying Turkish General Election." <a href="https://arxiv.org/abs/2211.13121" target="_blank">arXiv preprint arXiv:2211.13121</a> (2022).
+                    </p>
+                </div>
+
+                <div class="col-10">
+                    <img src="/posts/221122/secim-dataset.png" width="100%" style="margin-bottom: 3em;">
+                </div>
+            </div>
+        </div>
+
+        <div id="footer-container"></div>
+
+    </body>
+</html>
