@@ -79,8 +79,8 @@
         <script src="/js/vue.global.min.js"></script>
 
         <script type="module">
-            import axios from 'axios';
-            import JSZip from 'jszip';
+            //import axios from 'axios';
+            //import JSZip from 'jszip';
             
             export default {
               data() {
@@ -129,13 +129,20 @@
             <div class="row my-5 justify-content-center" >
                 <div class="col-10">
                     <div id="app">
+                        <div class="cont">
+                            <button type="button" class="btn btn-secondary" text-align="justify-content-center">
+                                <span tlang="en">Turkey Live Trends</span>
+                                <span tlang="tr">Türkiye Canlı Trendler</span>
+                            </button>                            
+                        </div> 
+                        <br>                    
                         <div>
                             <!doctype html>
                             <html lang="en">
                             <head>
                                 <title>Turkey Map</title>
                                 <link rel="stylesheet" href="style.css" type="text/css" />
-                            </head>
+                            </head>                        
                             <body>
                                 <?xml version="1.0"?>
                                 <!--
@@ -315,8 +322,8 @@
                                 <circle cx="280.5" cy="129.9" id="2">
                                 </circle>
                                 </svg>                                
-                            </body>
-                        </html>              
+                            </body>                            
+                        </html>                                     
                       </div>
                     </div>
                 </div>
