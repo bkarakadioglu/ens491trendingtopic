@@ -28,4 +28,32 @@ path.choose:hover {
     display: flex;
     justify-content: center;
     align-items: center;
-  }
+}
+
+.date-container input[type="date"] {
+    width: 45%;
+    padding: 10px;
+    font-size: 1.2rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+.table-container {
+    margin: 0 auto;
+    width: 80%;
+}
+
+table {
+    border-collapse: collapse;
+    text-align: center;
+}
+
+th, td {
+    border: 1px solid black;
+    padding: 8px;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+

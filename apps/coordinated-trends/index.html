@@ -76,44 +76,33 @@
         <!-- Import vega-embed -->
         <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>        
         <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.2.30/vue.global.min.js"></script>-->
-        <script src="/js/vue.global.min.js"></script>
+        <script src="/js/vue.global.min.js"></script> 
 
-        <!--
         <script type="module">
-            //import axios from 'axios';
-            //import JSZip from 'jszip';
-            
-            export default {
-              data() {
-                return {
-                  data: null,
-                }
-              },
-              methods: {
-                async getData() {
-                  const response = await axios({
-                    method: 'get',
-                    url: './Turkey_2022-07.jsons.gz',
-                    responseType: 'arraybuffer'
-                  });
-                  const data = new Uint8Array(response.data);
-                  JSZip.decompress(data, {to: 'string'}).then(result => {
-                    this.data = JSON.parse(result);
-                    console.log(this.data);
-                  });
+            const { createApp } = Vue
+              createApp({
+                data() {
+                  return {
+                      trends: null,
+                  }
                 },
-              },
-            }
-        </script>
-            
-        <script type="module">
-            import { createApp } from 'vue';
-            import axios from 'axios';
-            import JSZip from 'jszip';
-            import App from './App.vue';                
-            createApp(App).mount('#app');
-        </script>
-        -->    
+                beforeMount: function() {
+                      this.getJson();
+                },
+                methods: {
+                  getJson: function(){
+                      $.getJSON('./trend_topics.json',function(json){
+                          this.trends = json;
+                      }.bind(this));                      
+                  },
+                  istanbuljson: function(){
+                      $.getJSON('./trend_topicsb.json',function(json){
+                          this.trends = json;
+                      }.bind(this));
+                  },
+                }
+              }).mount('#app2');
+          </script>
 
         <!-- Google tag (gtag.js) -->
         <script async src="https://www.googletagmanager.com/gtag/js?id=G-KMQ3V513ZY"></script>
@@ -131,43 +120,18 @@
         <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
         
         <div id="app2"  class="row my-5 justify-content-center">
-          <div class="col-10">
-          <table style="width:50%">
-            <thead>
-              <tr>
-                <th>Created At</th>
-                <th>As Of</th>
-                <th>Name</th>
-                <th>Tweet Volume</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="object in trends.trends" :key="object.name">
-                <td>{{ trends.created_at }}</td>
-                <td>{{ trends.as_of }}</td>
-                <td>{{ object.name }}</td>
-                <td>{{ object.tweet_volume }}</td>
-              </tr>
-            </tbody>
-          </table>
-          <!--
-          ************* Copyright (c) 2017 Pareto Softare, LLC DBA Simplemaps.com *******************		
-          ************* Free for Commercial Use, full terms at  http://simplemaps.com/resources/svg-license ************
-          ************* Attribution is appreciated! http://simplemaps.com ***************************
-          -->
-          
+        <div class="col-10">         
         <div id="header-container"></div>        
         <div class="container">
+            <div class="cont">
+                <button v-on:click="getJson()" type="button" class="btn btn-secondary" text-align="justify-content-center">
+                    <span tlang="en">Turkey Live Trends</span>
+                    <span tlang="tr">Türkiye Canlı Trendler</span>
+                </button>                            
+            </div> 
             <div class="row my-5 justify-content-center" >
                 <div class="col-10">
-                    <div id="app">
-                        <div class="cont">
-                            <button v-on:click="getJson()" type="button" class="btn btn-secondary" text-align="justify-content-center">
-                                <span tlang="en">Turkey Live Trends</span>
-                                <span tlang="tr">Türkiye Canlı Trendler</span>
-                            </button>                            
-                        </div> 
-                        <br>                    
+                    <div id="app">                                           
                         <div>
                             <!doctype html>
                             <html lang="en">
@@ -355,43 +319,78 @@
                                     </circle>
                                     </svg>
                                   </div>
-                                  <p>{{dnm}}</p>                                
+                                  <br><br>                                                                
                             </body>                            
-                        </html>                                     
+                        </html>
+                        <div class="border border-secondary rounded" style="margin-bottom: 2em; padding:1em;">
+                            <div class="mb-3">
+                            <h3>
+                                <i class="fa fa-chart-bar"></i>&nbsp;
+                                <span tlang="en">Analysis of Trend Topics</span>
+                                <span tlang="tr">Trend Topic Analizi</span>
+                                <!--https://codepen.io/thaekeh/pen/PoGJRKQ-->
+                            </h3>
+                            </div>
+                            <div class="date-container">
+                                <div style="display: flex;">
+                                  <label for="start" style="width: 150px;"> Created At: </label>
+                                  <input type="date" id="start" name="trip-start" value="2022-07-22" min="01.07.2022" max="01.01.2023">
+                                </div>
+                                <div style="display: flex;">
+                                  <label for="start" style="width: 150px;"> As Of: </label>
+                                  <input type="date" id="start" name="trip-start" value="2022-07-22" min="01.07.2022" max="01.01.2023">
+                                </div>
+                                <div class="mb-3">
+                                  <div tlang="en" style="display: flex;">
+                                    <input class="form-control" type="text" v-model="searchValue" placeholder="Search by #hashtag, tt" id="search-input"></input>
+                                  </div>
+                                  <div tlang="tr" style="display: flex;">
+                                    <input class="form-control" type="text" v-model="searchValue" placeholder="Hashtag ile ara" id="search-input"></input>
+                                  </div>
+                                </div>
+                                <div class="mb-3">
+                                  <div class="btn-group me-2" role="group">
+                                    <button type="button" class="btn btn-outline-secondary" v-on:click="ascending = !ascending" class="sort-button">
+                                      <i v-if="ascending" class="fa fa-sort-up"></i>
+                                      <i v-else class="fa fa-sort-down"></i>&nbsp;
+                                      <span tlang="en">Order</span>
+                                      <span tlang="tr">Sırala</span>
+                                    </button>
+                                    <button id="btnDrawAll" type="button" class="btn btn-outline-secondary">
+                                      <i class="fa fa-sync"></i>&nbsp;
+                                      <span tlang="en">Plot all charts</span>
+                                      <span tlang="tr">Tüm grafikleri hazırla</span>
+                                    </button>
+                                  </div>
+                                </div>
+                              </div>                              
+                            </div> 
+                            <div class="table-container">
+                                <table style="width:50%">
+                                    <thead>
+                                      <tr>
+                                        <th>Created At</th>
+                                        <th>As Of</th>
+                                        <th>Name</th>
+                                        <th>Tweet Volume</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      <tr v-for="object in trends.trends" :key="object.name">
+                                        <td>{{ trends.created_at }}</td>
+                                        <td>{{ trends.as_of }}</td>
+                                        <td>{{ object.name }}</td>
+                                        <td>{{ object.tweet_volume }}</td>
+                                      </tr>
+                                    </tbody>
+                                  </table> 
+                            </div>                                                      
+                        </form>                                    
                       </div>
                     </div>
                 </div>
-            </div>
+            </div>        
         </div>
-        
-        <script type="module">
-          const { createApp } = Vue
-            createApp({
-              data() {
-                return {
-                    trends: null,
-                    dnm: "İstanbula tıkla"
-                }
-              },
-              beforeMount: function() {
-                    this.getJson();
-              },
-              methods: {
-                getJson: function(){
-                    $.getJSON('./trend_topics.json',function(json){
-                        this.trends = json;
-                    }.bind(this));
-                    this.dnm = "Şu an Türkiyenin trendleri var, deneme olarak İstanbul'a tıkla"
-                },
-                istanbuljson: function(){
-                    $.getJSON('./trend_topicsb.json',function(json){
-                        this.trends = json;
-                    }.bind(this));
-                    this.dnm = "İstanbul'a tıkladın, aslına geri dönmek için İzmir'e tıkla"
-                },
-              }
-            }).mount('#app2');
-        </script>
         <div id="footer-container"></div>
     </body>
 </html>
