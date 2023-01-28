@@ -93,22 +93,17 @@
                 },
                 methods: {
                   IzmirJson: function(){
-                      $.getJSON('./Izmir.json',function(json){
+                      $.getJSON('./data/Izmir.json',function(json){
                           this.trends = json;
                       }.bind(this));                      
                   },
                   IstanbulJson: function(){
-                      $.getJSON('./Istanbul.json',function(json){
+                      $.getJSON('./data/Istanbul.json',function(json){
                           this.trends = json;
                       }.bind(this));
-                  },
-                  getDateDataJson: function(){
-                      $.getJSON('./date_data.json',function(json){
-                          this.dateData = json;
-                      }.bind(this));
-                  },
+                  },                  
                   TurkeyJson: function(){
-                      $.getJSON('./Turkey.json',function(json){
+                      $.getJSON('./data/Turkey.json',function(json){
                           this.trends = json;
                       }.bind(this));
                   },
@@ -147,19 +142,11 @@
     </head>
     <body>
         <div id="header-container"></div>  
-
-        <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-        
+        <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>        
         <div id="app2"  class="row my-5 justify-content-center">
         <div class="col-10">         
         <div id="header-container"></div>        
-        <div class="container">
-            <!--<div class="cont">
-                <button v-on:click="getDateDataJson()" type="button" class="btn btn-secondary" text-align="justify-content-center">
-                    <span tlang="en">Turkey Live Trends</span>
-                    <span tlang="tr">Türkiye Canlı Trendler</span>
-                </button>                            
-            </div> -->
+        <div class="container">            
             <div class="row my-5 justify-content-center" >
                 <div class="col-10">
                     <div id="app">                                           
@@ -350,15 +337,17 @@
                                     </circle>
                                     </svg>
                                   </div>
-                                  <br><br>                                               
-                                  <div class="cont">
-                                    <button v-on:click="TurkeyJson()" type="button" class="btn btn-secondary" text-align="justify-content-center">
-                                        <span tlang="en">Turkey Live Trends</span>
-                                        <span tlang="tr">Türkiye Canlı Trendler</span>
-                                    </button>                            
+                                  <br><br>                                                                          
                                 </div>                                                  
-                            </body>                            
+                            </body>                                                          
                         </html>
+                        <div class="cont">
+                            <button v-on:click="TurkeyJson()" type="button" class="btn btn-secondary" text-align="justify-content-center">
+                                <span tlang="en">Turkey Live Trends</span>
+                                <span tlang="tr">Türkiye Canlı Trendler</span>
+                            </button> 
+                        </div><br>
+                        <form class="border border-secondary rounded" style="margin-bottom: 2em; padding:1em;">
                         <div class="border border-secondary rounded" style="margin-bottom: 2em; padding:1em;">
                             <div class="mb-3">
                             <h3>
@@ -377,6 +366,7 @@
                                   <label for="start" style="width: 150px;"> As Of: </label>
                                   <input type="date" id="asof" name="trip-start" value="2022-07-22" min="01.07.2022" max="01.01.2023">
                                 </div>
+                                
                                 <div class="mb-3">
                                   <div tlang="en" style="display: flex;">
                                     <input class="form-control" type="text" v-model="searchValue" placeholder="Search by #hashtag, tt" id="search-input"></input>
@@ -385,6 +375,7 @@
                                     <input class="form-control" type="text" v-model="searchValue" placeholder="Hashtag ile ara" id="search-input"></input>
                                   </div>
                                 </div>
+
                                 <div class="mb-3">
                                   <div class="btn-group me-2" role="group">
                                     <button type="button" class="btn btn-outline-secondary" v-on:click="ascending = !ascending" class="sort-button">
@@ -398,12 +389,53 @@
                                       <span tlang="en">Plot all charts</span>
                                       <span tlang="tr">Tüm grafikleri hazırla</span>
                                     </button>
-                                  </div>
+                                  </div>                                  
                                 </div>
-                              </div>                              
-                            </div> 
+                                </form>                             
+                              </div>
+
+                              <div id="wait-message" class="alert alert-light" role="alert">
+                                <h2>
+                                  <span class="spinner-grow" role="status" aria-hidden="true"> </span>
+                                  <span tlang="en"> Please wait while page loading</span>
+                                  <span tlang="tr"> Sayfa hazırlanırken lütfen bekleyiniz</span>
+                                </h2>
+                              </div>
+                              
+                              <div class="card" style="margin-bottom:1em;" v-for="pol in filteredData" :key="pol.screen_name">
+                                <div class="card-header">
+                                    <div class="row g-0">
+                                        <div class="col-md-8">
+                                        <h5 class="card-title">
+                                            <b>{{ pol.name }} </b> 
+                                            <p>search kısmı bu olmadığı için çalışmıyordu şimdi çalışıyor ama hatalı</p>
+                                            (<a v-bind:href="'https://twitter.com/' + pol.screen_name" target="_blank">@{{ pol.screen_name }}</a>)
+                                            
+                                        </h5>
+                                        <h6 class="card-subtitle mb-2 text-muted">
+                                            <span tlang="en"># of followers:</span>
+                                            <span tlang="tr">Takipçi Sayısı:</span>
+                                            {{ pol.followers[pol.followers.length-1][1] }}
+                                        </h6>
+                                        </div>
+                        
+                                        <div class="col-md-4">
+                                            <img v-bind:src="'/img/party-' + pol.party.toLowerCase().replace('i̇','i') + '-logo.png'" onError="this.onerror=null;this.src='/img/noimage.png';" style="height:50px;" class="float-end">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <button @click="redraw" v-bind:id="'btnchart-' + pol.id" type="button" class="btn btn-secondary">
+                                        <span tlang="en">Prepare chart</span>
+                                        <span tlang="tr">Grafik hazırla</span>
+                                    </button>
+                                    <div class="followerchart" v-bind:id="'chart-' + pol.id" :data=JSON.stringify(pol.followers)></div>
+                                    <div v-bind:id="'livechart-' + pol.id"></div>
+                                </div>
+                              </div>
+
                             <div class="table-container">
-                              <table style="width:50%">
+                                <table style="width:50%">
                                   <thead>
                                     <tr>
                                       <th>Name</th>
@@ -416,56 +448,9 @@
                                       <td>{{ object.name }}</td>
                                       <td>{{ object.tweet_volume }}</td>
                                     </tr>
-                                  </tbody>
-                                </table> 
-                          </div>
-                            <!--<div class="table-container">
-                                <table style="width:50%">
-                                    <thead>
-                                      <tr>
-                                        <th>Created At</th>
-                                        <th>As Of</th>
-                                        <th>Name</th>
-                                        <th>Tweet Volume</th>
-                                      </tr>
-                                    </thead>
-                                    <tbody>
-                                      <tr v-for="object in trends.trends" :key="object.name">
-                                        <td>{{ trends.created_at }}</td>
-                                        <td>{{ trends.as_of }}</td>
-                                        <td>{{ object.name }}</td>
-                                        <td>{{ object.tweet_volume }}</td>
-                                      </tr>
-                                    </tbody>
-                                  </table> 
-                            </div> -->
-                            <div class="table-container">
-                              <table style="width:50%">
-                                  <thead>
-                                    <tr>
-                                      <th>Created At</th>
-                                      <th>As Of</th>
-                                      <th>Trends Name</th>
-                                      <th>Tweet Volume</th>
-                                      <th>Date</th>
-                                      <th>Time</th>
-                                      <th>Time seconds</th>
-                                    </tr>
-                                  </thead>
-                                  <tbody>
-                                    
-                                    <tr v-for="object in dateData">
-                                      <td>{{ object.created_at }}</td>
-                                      <td>{{ object.as_of }}</td>
-                                      <td>{{ object.trends.name }}</td>
-                                      <td>{{ object.trends.tweet_volume }}</td>
-                                      <td>{{ object.date }}</td>
-                                      <td>{{ object.time }}</td>
-                                      <td>{{ object.time_seconds }}</td>
-                                    </tr>
-                                  </tbody>
-                                </table> 
-                          </div>                                                      
+                                </tbody>
+                            </table> 
+                          </div>                                                                              
                         </form>                                    
                       </div>
                     </div>
