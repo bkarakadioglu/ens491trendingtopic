@@ -84,6 +84,7 @@
                 data() {
                   return {
                       trends: null,
+                      dateData: null
                   }
                 },
                 beforeMount: function() {
@@ -100,6 +101,12 @@
                           this.trends = json;
                       }.bind(this));
                   },
+                  getDateDataJson: function(){
+                      $.getJSON('./date_data.json',function(json){
+                          this.dateData = json;
+                      }.bind(this));
+                      console.log(this.dateData)
+                  }
                 }
               }).mount('#app2');
           </script>
@@ -124,7 +131,7 @@
         <div id="header-container"></div>        
         <div class="container">
             <div class="cont">
-                <button v-on:click="getJson()" type="button" class="btn btn-secondary" text-align="justify-content-center">
+                <button v-on:click="getDateDataJson()" type="button" class="btn btn-secondary" text-align="justify-content-center">
                     <span tlang="en">Turkey Live Trends</span>
                     <span tlang="tr">Türkiye Canlı Trendler</span>
                 </button>                            
@@ -384,7 +391,34 @@
                                       </tr>
                                     </tbody>
                                   </table> 
-                            </div>                                                      
+                            </div> 
+                            <div class="table-container">
+                              <table style="width:50%">
+                                  <thead>
+                                    <tr>
+                                      <th>Created At</th>
+                                      <th>As Of</th>
+                                      <th>Trends Name</th>
+                                      <th>Tweet Volume</th>
+                                      <th>Date</th>
+                                      <th>Time</th>
+                                      <th>Time seconds</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    
+                                    <tr v-for="object in dateData">
+                                      <td>{{ object.created_at }}</td>
+                                      <td>{{ object.as_of }}</td>
+                                      <td>{{ object.trends.name }}</td>
+                                      <td>{{ object.trends.tweet_volume }}</td>
+                                      <td>{{ object.date }}</td>
+                                      <td>{{ object.time }}</td>
+                                      <td>{{ object.time_seconds }}</td>
+                                    </tr>
+                                  </tbody>
+                                </table> 
+                          </div>                                                      
                         </form>                                    
                       </div>
                     </div>
