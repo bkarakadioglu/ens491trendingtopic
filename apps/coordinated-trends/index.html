@@ -83,8 +83,9 @@
               createApp({
                 data() {
                   return {
-                      trends: null,
-                      dateData: null
+                      trends: [],
+                      dateData: [],
+                      searchValue : '',
                   }
                 },
                 beforeMount: function() {
@@ -110,6 +111,25 @@
                       $.getJSON('./Turkey.json',function(json){
                           this.trends = json;
                       }.bind(this));
+                  },
+                  //Using moment library might be better
+                  turnTimestampToDate: function (timestamp) {
+                    return new Date(timestamp).toLocaleDateString();
+                  }
+                },
+                computed: {
+                  filteredData(){
+                    console.log('Working on searching')
+                    let tempTrends = this.trends
+                    // Process search input
+                    if (this.searchValue != '' && this.searchValue) {
+                      tempTrends = tempTrends.filter((item) => {
+                        console.log(item)
+                          return (item.name + item.tweet_volume)
+                              .toUpperCase()
+                              .includes(this.searchValue.toUpperCase())
+                      })
+                    }
                   }
                 }
               }).mount('#app2');
@@ -351,11 +371,11 @@
                             <div class="date-container">
                                 <div style="display: flex;">
                                   <label for="start" style="width: 150px;"> Created At: </label>
-                                  <input type="date" id="start" name="trip-start" value="2022-07-22" min="01.07.2022" max="01.01.2023">
+                                  <input type="date" id="createdat" name="trip-start" value="2022-07-22" min="01.07.2022" max="01.01.2023">
                                 </div>
                                 <div style="display: flex;">
                                   <label for="start" style="width: 150px;"> As Of: </label>
-                                  <input type="date" id="start" name="trip-start" value="2022-07-22" min="01.07.2022" max="01.01.2023">
+                                  <input type="date" id="asof" name="trip-start" value="2022-07-22" min="01.07.2022" max="01.01.2023">
                                 </div>
                                 <div class="mb-3">
                                   <div tlang="en" style="display: flex;">
@@ -391,6 +411,7 @@
                                     </tr>
                                   </thead>
                                   <tbody>
+                                    <tr>Date is: {{ turnTimestampToDate( trends[0].date) }}</tr>
                                     <tr v-for="object in trends[0].trends_list" :key="object.name">
                                       <td>{{ object.name }}</td>
                                       <td>{{ object.tweet_volume }}</td>
