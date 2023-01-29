@@ -84,7 +84,7 @@
                 data() {
                   return {
                       trends: [],
-                      dateData: [],
+                      currentTrends: [],                      
                       searchValue : '',
                   }
                 },
@@ -95,16 +95,19 @@
                   IzmirJson: function(){
                       $.getJSON('./data/Izmir.json',function(json){
                           this.trends = json;
+                          this.currentTrends = this.trends[0].trends_list;
                       }.bind(this));                      
                   },
                   IstanbulJson: function(){
                       $.getJSON('./data/Istanbul.json',function(json){
                           this.trends = json;
+                          this.currentTrends = this.trends[0].trends_list;
                       }.bind(this));
                   },                  
                   TurkeyJson: function(){
                       $.getJSON('./data/Turkey.json',function(json){
                           this.trends = json;
+                          this.currentTrends = this.trends[0].trends_list;
                       }.bind(this));
                   },
                   //Using moment library might be better
@@ -113,18 +116,21 @@
                   }
                 },
                 computed: {
-                  filteredData(){
-                    console.log('Working on searching')
-                    let tempTrends = this.trends
-                    // Process search input
+                  
+                  filteredCurrentTrends: function(){
+                    console.log('Working')
+                    let tempTt = this.currentTrends
                     if (this.searchValue != '' && this.searchValue) {
-                      tempTrends = tempTrends.filter((item) => {
+                      tempTt =  tempTt.filter((item) => {
+                        console.log("here")
                         console.log(item)
-                          return (item.name + item.tweet_volume)
-                              .toUpperCase()
-                              .includes(this.searchValue.toUpperCase())
+                        return  item.name
+                          .toUpperCase()
+                          .includes(this.searchValue.toUpperCase())
                       })
                     }
+                    console.log("here2")
+                    return tempTt
                   }
                 }
               }).mount('#app2');
@@ -402,7 +408,7 @@
                                 </h2>
                               </div>
                               
-                              <div class="card" style="margin-bottom:1em;" v-for="pol in filteredData" :key="pol.screen_name">
+                              <!--<div class="card" style="margin-bottom:1em;" v-for="pol in filteredData" :key="pol.screen_name">
                                 <div class="card-header">
                                     <div class="row g-0">
                                         <div class="col-md-8">
@@ -432,9 +438,9 @@
                                     <div class="followerchart" v-bind:id="'chart-' + pol.id" :data=JSON.stringify(pol.followers)></div>
                                     <div v-bind:id="'livechart-' + pol.id"></div>
                                 </div>
-                              </div>
+                              </div>-->
 
-                            <div class="table-container">
+                            <div class="table-container" v-for="tt in filteredCurrentTrends">
                                 <table style="width:50%">
                                   <thead>
                                     <tr>
@@ -443,14 +449,14 @@
                                     </tr>
                                   </thead>
                                   <tbody>
-                                    <tr>Date is: {{ turnTimestampToDate( trends[0].date) }}</tr>
-                                    <tr v-for="object in trends[0].trends_list" :key="object.name">
-                                      <td>{{ object.name }}</td>
-                                      <td>{{ object.tweet_volume }}</td>
+                                    
+                                    <tr>
+                                      <td>{{ tt.name }}</td>
+                                      <td>{{ tt.tweet_volume }}</td>
                                     </tr>
-                                </tbody>
-                            </table> 
-                          </div>                                                                              
+                                  </tbody>
+                              </table> 
+                            </div>                                                                              
                         </form>                                    
                       </div>
                     </div>
