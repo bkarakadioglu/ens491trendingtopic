@@ -85,7 +85,8 @@
                   return {
                       trends: [],
                       currentTrends: [],                      
-                      searchValue : '',
+                      searchValue : '',   
+                      asOf : "",                  
                   }
                 },
                 beforeMount: function() {
@@ -102,7 +103,7 @@
                       $.getJSON('./data/Istanbul.json',function(json){
                           this.trends = json;
                           this.currentTrends = this.trends[0].trends_list;
-                      }.bind(this));
+                      }.bind(this));                                         
                   },                  
                   TurkeyJson: function(){
                       $.getJSON('./data/Turkey.json',function(json){
@@ -110,27 +111,36 @@
                           this.currentTrends = this.trends[0].trends_list;
                       }.bind(this));
                   },
-                  //Using moment library might be better
                   turnTimestampToDate: function (timestamp) {
-                    return new Date(timestamp).toLocaleDateString();
+                    return new Date(timestamp).toLocaleDateString("tr-tr");
+                  },
+                  turnAsofToDate: function (asOf) {
+                    let year = asOf.substr(0,4);
+                    let month = asOf.substr(5,2);
+                    let day = asOf.substr(8,2);
+                    return day + "." + month + "." + year; 
                   }
+
                 },
                 computed: {
                   
                   filteredCurrentTrends: function(){
-                    console.log('Working')
-                    let tempTt = this.currentTrends
+                    this.asOf;
+                    for (let i = 0; i < this.trends.length; i++) {
+                        if(this.turnTimestampToDate(this.trends[i].date) == this.turnAsofToDate(this.asOf)){
+                          this.currentTrends = this.trends[i].trends_list;
+                        }
+                      }  
+                    console.log('Filtered Current Trends is Working')                    
                     if (this.searchValue != '' && this.searchValue) {
-                      tempTt =  tempTt.filter((item) => {
-                        console.log("here")
+                      this.currentTrends =  this.currentTrends.filter((item) => {
                         console.log(item)
                         return  item.name
                           .toUpperCase()
                           .includes(this.searchValue.toUpperCase())
                       })
-                    }
-                    console.log("here2")
-                    return tempTt
+                    }                   
+                    return this.currentTrends
                   }
                 }
               }).mount('#app2');
@@ -370,7 +380,7 @@
                                 </div>
                                 <div style="display: flex;">
                                   <label for="start" style="width: 150px;"> As Of: </label>
-                                  <input type="date" id="asof" name="trip-start" value="2022-07-22" min="01.07.2022" max="01.01.2023">
+                                  <input type="date" id="asof" name="trip-start" value="2022-07-22" min="01.07.2022" max="01.01.2023"  v-model="asOf" >
                                 </div>
                                 
                                 <div class="mb-3">
