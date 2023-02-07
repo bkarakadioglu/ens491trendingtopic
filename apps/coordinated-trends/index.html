@@ -86,7 +86,8 @@
                       trends: [],
                       currentTrends: [],                      
                       searchValue : '',   
-                      asOf : "",                  
+                      asOf : "",
+                      createdAt:"",                  
                   }
                 },
                 beforeMount: function() {
@@ -119,27 +120,47 @@
                     let month = asOf.substr(5,2);
                     let day = asOf.substr(8,2);
                     return day + "." + month + "." + year; 
+                  },
+                  turnCreatedAtDate: function (createdAt) {
+                    let year = createdAt.substr(0,4);
+                    let month = createdAt.substr(5,2);
+                    let day = createdAt.substr(8,2);
+                    return day + "." + month + "." + year; 
                   }
-
                 },
-                computed: {
-                  
+                computed: {                  
                   filteredCurrentTrends: function(){
-                    this.asOf;
-                    for (let i = 0; i < this.trends.length; i++) {
-                        if(this.turnTimestampToDate(this.trends[i].date) == this.turnAsofToDate(this.asOf)){
-                          this.currentTrends = this.trends[i].trends_list;
+                    if(this.asOf){
+                        for (let i = 0; i < this.trends.length; i++) {
+                            if(this.turnTimestampToDate(this.trends[i].date) == this.turnAsofToDate(this.asOf)){
+                            this.currentTrends = this.trends[i].trends_list;
+                            }
+                        }  
+                        console.log('Filtered Current Trends is Working')                    
+                        if (this.searchValue != '' && this.searchValue) {
+                        this.currentTrends =  this.currentTrends.filter((item) => {
+                            console.log(item)
+                            return  item.name
+                            .toUpperCase()
+                            .includes(this.searchValue.toUpperCase())
+                        })
                         }
-                      }  
-                    console.log('Filtered Current Trends is Working')                    
-                    if (this.searchValue != '' && this.searchValue) {
-                      this.currentTrends =  this.currentTrends.filter((item) => {
-                        console.log(item)
-                        return  item.name
-                          .toUpperCase()
-                          .includes(this.searchValue.toUpperCase())
-                      })
-                    }                   
+                    }else if(this.createdAt){
+                        for (let i = 0; i < this.trends.length; i++) {
+                            if(this.turnTimestampToDate(this.trends[i].date) == this.turnCreatedAtDate(this.createdAt)){
+                            this.currentTrends = this.trends[i].trends_list;
+                            }
+                        }  
+                        console.log('Filtered Current Trends is Working')                    
+                        if (this.searchValue != '' && this.searchValue) {
+                        this.currentTrends =  this.currentTrends.filter((item) => {
+                            console.log(item)
+                            return  item.name
+                            .toUpperCase()
+                            .includes(this.searchValue.toUpperCase())
+                        })
+                        }
+                    }                
                     return this.currentTrends
                   }
                 }
@@ -418,55 +439,30 @@
                                 </h2>
                               </div>
                               
-                              <!--<div class="card" style="margin-bottom:1em;" v-for="pol in filteredData" :key="pol.screen_name">
+                              <div class="card" style="margin-bottom:1em;" v-for="tt in filteredCurrentTrends" :key="tt.name">
                                 <div class="card-header">
                                     <div class="row g-0">
                                         <div class="col-md-8">
-                                        <h5 class="card-title">
-                                            <b>{{ pol.name }} </b> 
-                                            <p>search kısmı bu olmadığı için çalışmıyordu şimdi çalışıyor ama hatalı</p>
-                                            (<a v-bind:href="'https://twitter.com/' + pol.screen_name" target="_blank">@{{ pol.screen_name }}</a>)
-                                            
+                                        <h5 class="card-title">                                            
+                                            <p>{{tt.name}}</p>                                                                                     
                                         </h5>
                                         <h6 class="card-subtitle mb-2 text-muted">
-                                            <span tlang="en"># of followers:</span>
-                                            <span tlang="tr">Takipçi Sayısı:</span>
-                                            {{ pol.followers[pol.followers.length-1][1] }}
+                                            <span tlang="en">Volume:</span>                                           
+                                            <span tlang="tr">Hacim (Volume):</span> 
+                                            {{tt.tweet_volume}}                                           
                                         </h6>
-                                        </div>
-                        
-                                        <div class="col-md-4">
-                                            <img v-bind:src="'/img/party-' + pol.party.toLowerCase().replace('i̇','i') + '-logo.png'" onError="this.onerror=null;this.src='/img/noimage.png';" style="height:50px;" class="float-end">
-                                        </div>
+                                        </div>                       
                                     </div>
                                 </div>
                                 <div class="card-body">
-                                    <button @click="redraw" v-bind:id="'btnchart-' + pol.id" type="button" class="btn btn-secondary">
+                                    <button @click="redraw" v-bind:id="'btnchart-' + tt.date" type="button" class="btn btn-secondary">
                                         <span tlang="en">Prepare chart</span>
                                         <span tlang="tr">Grafik hazırla</span>
                                     </button>
-                                    <div class="followerchart" v-bind:id="'chart-' + pol.id" :data=JSON.stringify(pol.followers)></div>
-                                    <div v-bind:id="'livechart-' + pol.id"></div>
+                                    <div class="followerchart" v-bind:id="'chart-' + tt.date" :data=JSON.stringify(tt.trends)></div>
+                                    <div v-bind:id="'livechart-' + tt.date"></div>
                                 </div>
-                              </div>-->
-
-                            <div class="table-container" v-for="tt in filteredCurrentTrends">
-                                <table style="width:50%">
-                                  <thead>
-                                    <tr>
-                                      <th>Name</th>
-                                      <th>Tweet Volume</th>
-                                    </tr>
-                                  </thead>
-                                  <tbody>
-                                    
-                                    <tr>
-                                      <td>{{ tt.name }}</td>
-                                      <td>{{ tt.tweet_volume }}</td>
-                                    </tr>
-                                  </tbody>
-                              </table> 
-                            </div>                                                                              
+                              </div>                                                                                                         
                         </form>                                    
                       </div>
                     </div>
