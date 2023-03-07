@@ -87,13 +87,20 @@
                       currentTrends: [],                      
                       searchValue : '',   
                       asOf : "",
-                      createdAt:"",                  
+                      createdAt:"", 
+                      chart: null                 
                   }
                 },
                 beforeMount: function() {
                       this.TurkeyJson();
+                      this.getJson();
                 },
                 methods: {
+                  getJson: function(){
+                    $.getJSON('./trend-temp-chart.json',function(json){
+                        this.chart = json;
+                    }.bind(this));
+                  },
                   IzmirJson: function(){
                       $.getJSON('./data/Izmir.json',function(json){
                           this.trends = json;
@@ -126,6 +133,31 @@
                     let month = createdAt.substr(5,2);
                     let day = createdAt.substr(8,2);
                     return day + "." + month + "." + year; 
+                  },
+                  redraw() {
+                    let cnameUnchanged = event.currentTarget.id.replace('btnchart-','')
+                    let cname = cnameUnchanged.replace(' ','').replace('#','');
+                    console.log(cname);
+                    for (let i = 0;  i < this.currentTrends.length; i++) {
+                      if (this.currentTrends[i].name == cnameUnchanged){
+                          console.log('Match found');
+                          var tweetVolume = this.currentTrends[i]['tweet_volume'];
+                          var chartd = this.chart;
+                          var newdata = [];
+                          
+                          newdata.push({
+                              "name": cname,
+                              "tweet_volume": tweetVolume,
+                          })
+                          
+
+                          chartd["data"]["values"] = [{"category": cnameUnchanged, "amount": tweetVolume}];
+                          vegaEmbed('#livechart-'+cname , chartd).then(function(result) {}).catch(console.error);
+                          $('#' + event.currentTarget.id).hide();
+
+                      }
+                    }
+                    setLang(getCookie('pagelang', 'tr'));
                   }
                 },
                 computed: {                  
@@ -455,12 +487,12 @@
                                     </div>
                                 </div>
                                 <div class="card-body">
-                                    <button @click="redraw" v-bind:id="'btnchart-' + tt.date" type="button" class="btn btn-secondary">
+                                    <button @click="redraw" v-bind:id="'btnchart-' + tt.name" type="button" class="btn btn-secondary">
                                         <span tlang="en">Prepare chart</span>
                                         <span tlang="tr">Grafik hazırla</span>
                                     </button>
-                                    <div class="followerchart" v-bind:id="'chart-' + tt.date" :data=JSON.stringify(tt.trends)></div>
-                                    <div v-bind:id="'livechart-' + tt.date"></div>
+                                    <div class="followerchart" v-bind:id="'chart-' + tt.name.replace(' ','').replace('#','')"></div>
+                                    <div v-bind:id="'livechart-' + tt.name.replace(' ','').replace('#','')"></div>
                                 </div>
                               </div>                                                                                                         
                         </form>                                    
