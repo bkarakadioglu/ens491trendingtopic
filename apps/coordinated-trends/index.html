@@ -145,13 +145,25 @@
                           var chartd = this.chart;
                           var newdata = [];
                           
-                          newdata.push({
-                              "name": cname,
-                              "tweet_volume": tweetVolume,
-                          })
-                          
-
-                          chartd["data"]["values"] = [{"category": cnameUnchanged, "amount": tweetVolume}];
+                          //Loop through the trends data which has the trends list for every date
+                          for (let i = 0; i < this.trends.length; i++) { 
+                            //console.log("There are ", this.trends.length," trends in the data") 
+                            //Loop through the trends list for that date
+                            for (let k = 0; k < this.trends[i].trends_list.length; k++) {
+                                //console.log(this.trends[i].trends_list.length) 
+                                //If the trends match for that button, add it to the data
+                                if(this.trends[i].trends_list[k].name == cnameUnchanged){
+                                  newdata.push({
+                                      //"name": this.trends[i].trends_list[k].name,
+                                      "Tweet Volume": this.trends[i].trends_list[k].tweet_volume,
+                                      "As Of": this.trends[i].as_of
+                                  })
+                                }
+                            } 
+                            
+                          } 
+                          console.log(newdata)
+                          chartd["data"]["values"] = newdata;
                           vegaEmbed('#livechart-'+cname , chartd).then(function(result) {}).catch(console.error);
                           $('#' + event.currentTarget.id).hide();
 
