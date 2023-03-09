@@ -166,6 +166,7 @@
                           chartd["data"]["values"] = newdata;
                           vegaEmbed('#livechart-'+cname , chartd).then(function(result) {}).catch(console.error);
                           $('#' + event.currentTarget.id).hide();
+                          $('#trendTimeCount-'+cname).append("Number of times this topic became trending: ", newdata.length);
 
                       }
                     }
@@ -503,7 +504,8 @@
                                         <span tlang="en">Prepare chart</span>
                                         <span tlang="tr">Grafik hazırla</span>
                                     </button>
-                                    <div class="followerchart" v-bind:id="'chart-' + tt.name.replace(' ','').replace('#','')"></div>
+                                    <div class="followerchart" v-bind:id="'chart-' + tt.name.replace(' ','').replace('#','')"></div>                                   
+                                    <p class="h6" v-bind:id="'trendTimeCount-' + tt.name.replace(' ','').replace('#','')"></p>
                                     <div v-bind:id="'livechart-' + tt.name.replace(' ','').replace('#','')"></div>
                                 </div>
                               </div>                                                                                                         
