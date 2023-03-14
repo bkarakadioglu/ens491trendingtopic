@@ -130,7 +130,7 @@
                   async redraw(targetId) {
                     console.log(targetId)
                     var cnameUnchanged = targetId.replace('btnchart-','')
-                    var cname = cnameUnchanged.replace(' ','').replace('#','');
+                    var cname = cnameUnchanged.replaceAll(' ','').replaceAll('#','');
                     var chartd = this.chart;
                     var newdata = [];
                     for (let i = 0;  i < this.currentTrends.length; i++) {
@@ -157,7 +157,7 @@
                     }
                     chartd["data"]["values"] = newdata;
                     await vegaEmbed('#livechart-'+cname , chartd).then(function(result) {}).catch(console.error);                            
-                    $('#' + targetId.replace('#','')).hide();
+                    $('#' + targetId.replaceAll('#','')).hide();
                     $('#trendTimeCount-'+cname).append("Number of times this topic became trending: ", newdata.length);
                     setLang(getCookie('pagelang', 'tr'));
                   },
@@ -478,9 +478,9 @@
                                         <span tlang="en">Prepare chart</span>
                                         <span tlang="tr">Grafik hazırla</span>
                                     </button>
-                                    <div class="followerchart" v-bind:id="'chart-' + tt.name.replace(' ','').replace('#','')" :data=JSON.stringify(tt.tweet_volume)></div>                                   
-                                    <p class="h6" v-bind:id="'trendTimeCount-' + tt.name.replace(' ','').replace('#','')"></p>
-                                    <div v-bind:id="'livechart-' + tt.name.replace(' ','').replace('#','')"></div>
+                                    <div class="followerchart" v-bind:id="'chart-' + tt.name.replaceAll(' ','').replaceAll('#','')" :data=JSON.stringify(tt.tweet_volume)></div>                                   
+                                    <p class="h6" v-bind:id="'trendTimeCount-' + tt.name.replaceAll(' ','').replaceAll('#','')"></p>
+                                    <div v-bind:id="'livechart-' + tt.name.replaceAll(' ','').replaceAll('#','')"></div>
                                 </div>
                               </div>                                                                                                         
                         </form>                                    
