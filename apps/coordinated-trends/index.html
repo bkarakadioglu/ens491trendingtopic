@@ -67,25 +67,25 @@
                       asOf : "",
                       createdAt:"", 
                       chart: null,
-                      turkeyJune: [],
-                      turkeyJuneChart: null    
+                      turkeyJuly: [],
+                      turkeyJulyChart: null    
                   }
                 },
                 beforeMount: function() {
                       this.TurkeyJson();
                       this.getJson();   
-                      this.getTurkeyJune();    
-                      this.getTurkeyJuneChart();            
+                      this.getTurkeyJuly();    
+                      this.getTurkeyJulyChart();            
                 },
                 methods: {
-                  getTurkeyJune: function(){
-                    $.getJSON('./data/TurkeyJune.json',function(json){
-                        this.turkeyJune = json;
+                  getTurkeyJuly: function(){
+                    $.getJSON('./data/TurkeyJuly.json',function(json){
+                        this.turkeyJuly = json;
                     }.bind(this));                    
                   },
-                  getTurkeyJuneChart: function(){
-                    $.getJSON('./turkeyJuneChart.json',function(json){
-                        this.turkeyJuneChart = json;
+                  getTurkeyJulyChart: function(){
+                    $.getJSON('./turkeyJulyChart.json',function(json){
+                        this.turkeyJulyChart = json;
                     }.bind(this));                    
                   },
                   getJson: function(){
@@ -167,9 +167,9 @@
                     } 
                   },
                   drawFoo(){
-                    var chartd = this.turkeyJuneChart;
-                    chartd["data"]["values"] = this.turkeyJune;
-                    vegaEmbed('#livechartjune', chartd).then(function(result) {}).catch(console.error);                            
+                    var chartd = this.turkeyJulyChart;
+                    chartd["data"]["values"] = JSON.parse(JSON.stringify(this.turkeyJuly));
+                    vegaEmbed('#livechartjuly', chartd).then(function(result) {}).catch(console.error);                            
                   }
                 },
                 computed: {                  
@@ -233,11 +233,11 @@
         <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>        
         <div id="app2"  class="row my-5 justify-content-center">
           <div class="card-body">
-            <button @click="drawFoo()" v-bind:id="btnchartjune" type="button" class="btn btn-secondary">
+            <button @click="drawFoo()" v-bind:id="btnchartjuly" type="button" class="btn btn-secondary">
                 <span tlang="en">Prepare chart</span>
                 <span tlang="tr">Grafik hazırla</span>
             </button>
-            <div id="livechartjune">June Graph Place</div>
+            <div id="livechartjuly">July Graph Place</div>
           </div>  
         <div class="col-10">         
         <div id="header-container"></div>        

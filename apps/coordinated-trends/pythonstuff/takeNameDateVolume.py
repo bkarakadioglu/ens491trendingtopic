@@ -1,5 +1,5 @@
 import json
-
+import time
 filename = "Turkey_2022-07.json"
 
 with open(filename, "r") as jsonFile:
@@ -10,9 +10,9 @@ with open(filename, "r") as jsonFile:
         for singleObject in data:
                 #Get the trends object with form {name:a, tweet_volume:1}
                 for trend in singleObject["trends"]:         
-                        resultAsof.setdefault(trend["name"], []).append(singleObject["as_of"])
+                        resultAsof.setdefault(trend["name"], []).append(int(time.mktime(time.strptime(singleObject["as_of"], '%Y-%m-%dT%H:%M:%SZ'))) * 1000)
                         resultVolume.setdefault(trend["name"], []).append(trend["tweet_volume"])
         arrRequired = []
         for name in resultVolume:
             arrRequired.append({ 'name' : name, 'asOf' : resultAsof[name], 'volumes' : resultVolume[name]})
-        json.dump(arrRequired, open('newdat2a.json','w'))
+        json.dump(arrRequired, open('newasdasdda2t2a.json','w'))
