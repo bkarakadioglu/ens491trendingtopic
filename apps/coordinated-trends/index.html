@@ -68,16 +68,23 @@
                       createdAt:"", 
                       chart: null,
                       turkeyJuly: [],
-                      turkeyJulyChart: null    
+                      turkeyJulyChart: null,
+                      eskisehirAll: []    
                   }
                 },
                 beforeMount: function() {
                       this.TurkeyJson();
                       this.getJson();   
-                      this.getTurkeyJuly();    
+                      this.getTurkeyJuly();  
+                      this.getEskisehir();  
                       this.getTurkeyJulyChart();            
                 },
                 methods: {
+                  getEskisehir: function(){
+                    $.getJSON('./data/Eskisehir_All.json',function(json){
+                        this.eskisehirAll = json;
+                    }.bind(this));                    
+                  },
                   getTurkeyJuly: function(){
                     $.getJSON('./data/TurkeyJuly.json',function(json){
                         this.turkeyJuly = json;
@@ -170,6 +177,11 @@
                     var chartd = this.turkeyJulyChart;
                     chartd["data"]["values"] = JSON.parse(JSON.stringify(this.turkeyJuly));
                     vegaEmbed('#livechartjuly', chartd).then(function(result) {}).catch(console.error);                            
+                  },
+                  drawEskisehir(){
+                    var chartd = this.turkeyJulyChart;
+                    chartd["data"]["values"] = JSON.parse(JSON.stringify(this.eskisehirAll));
+                    vegaEmbed('#livecharteskisehir', chartd).then(function(result) {}).catch(console.error);                            
                   }
                 },
                 computed: {                  
@@ -237,8 +249,15 @@
                 <span tlang="en">Prepare chart</span>
                 <span tlang="tr">Grafik hazırla</span>
             </button>
-            <div id="livechartjuly">July Graph Place</div>
+            <div id="livechartjuly">Turkey Graph Place</div>
           </div>  
+          <div class="card-body">
+            <button @click="drawEskisehir()" v-bind:id="btncharteskisehir" type="button" class="btn btn-secondary">
+                <span tlang="en">Prepare chart</span>
+                <span tlang="tr">Grafik hazırla</span>
+            </button>
+            <div id="livecharteskisehir">Eskisehir Graph Place</div>
+          </div>
         <div class="col-10">         
         <div id="header-container"></div>        
         <div class="container">            
