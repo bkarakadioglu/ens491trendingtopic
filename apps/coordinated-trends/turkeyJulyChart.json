@@ -1,8 +1,6 @@
 {
   "config": {
-    "view": {"continuousWidth": 600, "continuousHeight": 500},
-    "axis": {"grid": false}
-  },
+    "view": {"continuousWidth": 1500, "continuousHeight": 500}  },
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "data": {
     "values": [
