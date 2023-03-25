@@ -141,14 +141,7 @@
                     let month = asOf.substr(5,2);
                     let day = asOf.substr(8,2);
                     return day + "." + month + "." + year; 
-                  },
-                  turnCreatedAtDate: function (createdAt) {
-                    let year = createdAt.substr(0,4);
-                    let month = createdAt.substr(5,2);
-                    let day = createdAt.substr(8,2);
-                    return day + "." + month + "." + year; 
-                  },
-                  
+                  },                                   
                   async redraw(targetId) {
                     console.log(targetId)
                     var cnameUnchanged = targetId.replace('btnchart-','')
@@ -209,20 +202,6 @@
                     if(this.asOf){
                         for (let i = 0; i < this.trends.length; i++) {
                             if(this.turnTimestampToDate(this.trends[i].date) == this.turnAsofToDate(this.asOf)){
-                            this.currentTrends = this.trends[i].trends_list;
-                            }
-                        }  
-                        console.log('Filtered Current Trends is Working')                    
-                        if (this.searchValue != '' && this.searchValue) {
-                        this.currentTrends =  this.currentTrends.filter((item) => {
-                            return  item.name
-                            .toUpperCase()
-                            .includes(this.searchValue.toUpperCase())
-                        })
-                        }
-                    }else if(this.createdAt){
-                        for (let i = 0; i < this.trends.length; i++) {
-                            if(this.turnTimestampToDate(this.trends[i].date) == this.turnCreatedAtDate(this.createdAt)){
                             this.currentTrends = this.trends[i].trends_list;
                             }
                         }  
@@ -479,11 +458,7 @@
                                 <!--https://codepen.io/thaekeh/pen/PoGJRKQ-->
                             </h3>
                             </div>
-                            <div class="date-container">
-                                <div style="display: flex;">
-                                  <label for="createdat" style="width: 150px;"> Created At: </label>
-                                  <input type="date" id="createdat" name="trip-start" value="2022-07-22"v-model="createdAt">
-                                </div>
+                            <div class="date-container">                                
                                 <div style="display: flex;">
                                   <label for="asof" style="width: 150px;"> As Of: </label>
                                   <input type="date" id="asof" name="trip-start" value="2022-07-22" v-model="asOf" >
@@ -497,7 +472,6 @@
                                     <input class="form-control" type="text" v-model="searchValue" placeholder="Hashtag ile ara" id="search-input"></input>
                                   </div>
                                 </div>
-
                                 <div class="mb-3"> 
                                   <button @click="redrawAll()" id="btnDrawAll" type="button" class="btn btn-outline-secondary">
                                     <i class="fa fa-sync"></i>&nbsp;
