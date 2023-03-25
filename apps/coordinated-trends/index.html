@@ -69,7 +69,9 @@
                       chart: null,
                       turkeyJuly: [],
                       turkeyJulyChart: null,
-                      eskisehirAll: []    
+                      eskisehirAll: [],
+                      turkeySessions:[],
+                      turkeySessionsChart: null 
                   }
                 },
                 beforeMount: function() {
@@ -77,9 +79,22 @@
                       this.getJson();   
                       this.getTurkeyJuly();  
                       this.getEskisehir();  
-                      this.getTurkeyJulyChart();            
+                      this.getTurkeyJulyChart();
+                      this.getTurkeySessionsChart();            
+                      this.getTurkeySessions();            
+            
                 },
                 methods: {
+                  getTurkeySessionsChart: function(){
+                    $.getJSON('./data/TurkeySessions.json',function(json){
+                        this.turkeySessions = json;
+                    }.bind(this));                    
+                  },
+                  getTurkeySessions: function(){
+                    $.getJSON('./turkeySessionsChart.json',function(json){
+                        this.turkeySessionsChart = json;
+                    }.bind(this));                    
+                  },
                   getEskisehir: function(){
                     $.getJSON('./data/Eskisehir_All.json',function(json){
                         this.eskisehirAll = json;
@@ -182,6 +197,11 @@
                     var chartd = this.turkeyJulyChart;
                     chartd["data"]["values"] = JSON.parse(JSON.stringify(this.eskisehirAll));
                     vegaEmbed('#livecharteskisehir', chartd).then(function(result) {}).catch(console.error);                            
+                  },
+                  drawTurkeySessions(){
+                    var chartd = this.turkeySessionsChart;
+                    chartd["data"]["values"] = JSON.parse(JSON.stringify(this.turkeySessions));
+                    vegaEmbed('#livechartturkeysessions', chartd).then(function(result) {}).catch(console.error);                            
                   }
                 },
                 computed: {                  
@@ -244,6 +264,13 @@
         <div id="header-container"></div>  
         <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>        
         <div id="app2"  class="row my-5 justify-content-center">
+          <div class="card-body">
+            <button @click="drawTurkeySessions()" v-bind:id="btnchartturkeysessions" type="button" class="btn btn-secondary">
+                <span tlang="en">Prepare chart</span>
+                <span tlang="tr">Grafik hazırla</span>
+            </button>
+            <div id="livechartturkeysessions">Turkey Sessions Graph Place</div>
+          </div>
           <div class="card-body">
             <button @click="drawFoo()" v-bind:id="btnchartjuly" type="button" class="btn btn-secondary">
                 <span tlang="en">Prepare chart</span>
