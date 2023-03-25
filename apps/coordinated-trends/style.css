@@ -3,7 +3,7 @@
     padding: 0;
 }
 svg {
-    width: 900px;
+    width: 1000px;
     margin: 0 auto;
 }
 body{
@@ -31,10 +31,23 @@ path.choose:hover {
 }
 
 .date-container input[type="date"] {
-    width: 45%;
+    width: 60%;
     padding: 10px;
     font-size: 1.2rem;
     border: 1px solid #ccc;
     border-radius: 5px;
     margin-bottom: 10px;
+}
+.form_container {
+    margin: 0 auto;
+    padding: 10px;
+    width: 70%;
+    font-size: 1.2rem;
+    float: center;
+}
+
+select {
+    width: 60%;
+    padding: 10px;
+    font-size: 1.2rem;
 }

@@ -167,7 +167,6 @@
                                 }
                             }                             
                           } 
-                          
                       }
                     }
                     chartd["data"]["values"] = newdata;
@@ -269,8 +268,7 @@
         <div class="container">            
             <div class="row my-5 justify-content-center" >
                 <div class="col-10">
-                    <div id="app">       
-                                                                                               
+                    <div id="app">                                                                              
                         <svg baseprofile="tiny" stroke-linecap="round" stroke-linejoin="round" version="1.2" viewbox="0 0 1000 424" xmlns="http://www.w3.org/2000/svg">                                                             
                             <path d="M79.7 308.9l-0.2 0.5-1-2.1 0.5-0.2 0.2 0.3-0.2 0.4 0.7 1.1z m74.9 6.2l-6.9-0.9-3.8-2.1-3.2-2.7-3.8-0.8-2.8 1.9-1.9 3.7-2 1.6-6.3 0.5-3.7-0.2-2.2-1.1-2.4 0-2.4 0.6-2.3-0.4-3.7-2.5-4.2-0.6-2-0.8-1.9-1.2-1.7 0.1-1.6 0.9-0.7 1.1-2.8 6.1-0.6 1.1-0.9 0-0.8 0.5-0.5 0.8-0.2 0.9-0.6 0.6-1.2-0.1 0 0.5 0.7 0.5-0.3 0.3-3.1 0.2-0.7 0.3-0.6 0.5-0.7-0.8-0.4 0-0.3 0.3-0.2-0.7-0.6 0.1-0.7-0.3 0.5-0.6 0.4-0.6 0.1-0.7-0.2-0.8 1.1-0.4 0-0.5-0.5-1.2 0.3-3-0.9 0.3-0.3-0.4-0.4 0-0.7 0.8 0.2-1.1 0.3-1 0.1-1-0.3-1 0.2-0.4-0.4-0.7 0.2-0.7 0.8 0.5 0.5-1 0.1-1.5-0.1-0.7-0.8-0.3-3-2-4.6-1.2-1.9-1.1 0.5-1.3 0.9-0.3 3.5 0.3 1.1-0.2 4.5-1.6 0.7-0.5 1.2-1.5 0.4-1 0.2-1.5 0-1.5 0-0.8-0.9-1.2-0.3-0.7 0.1-1.3 0.8-0.8 0.3-0.8 3.6 0 4.2-1.7 6.3-4.2 2.7-0.4 12.8 1 12.1-3.3 10.1-0.1 1.8-0.7 1.8-1.1 2.1-0.6 2.1-0.3 8.2-3 7.1 0.2 0.6 1.5 0.7 1.4 2.9 2 0.6 2-0.1 2.2 0.8 4-0.4 1.4-1.2 0.9-0.1 1.7 1.1 1.5 0.8 1.7 1.1 1.7 3.4 0.7 0.5 1.5-0.2 1.8-1.6 1.2-2 0.1-2.4 3.4-2.8 2.7-4-0.5-3.7 1-1 2.5 0.6 2.5 1.1 0.6 0.4 0.9 0.3 0.9z" id="TUR2229" name="Aydin">
                             </path>
@@ -458,12 +456,22 @@
                                 <!--https://codepen.io/thaekeh/pen/PoGJRKQ-->
                             </h3>
                             </div>
+                            <div class="card-body"> 
+                              <div class="date-container">
+                                    <label for="cities" style="width: 150px;"> City: </label>                           
+                                    <select name="cities" id="cities">
+                                      <option value="turkey">Turkey</option>
+                                      <option value="eskisehir">Eskişehir</option>
+                                      <option value="izmir">Izmir</option>
+                                    </select>                                      
+                                  </form>                                              
+                              </div>
+                            </div>
                             <div class="date-container">                                
                                 <div style="display: flex;">
                                   <label for="asof" style="width: 150px;"> As Of: </label>
                                   <input type="date" id="asof" name="trip-start" value="2022-07-22" v-model="asOf" >
-                                </div>
-                                
+                                </div>                                
                                 <div class="mb-3">
                                   <div tlang="en" style="display: flex;">
                                     <input class="form-control" type="text" v-model="searchValue" placeholder="Search by #hashtag, tt" id="search-input"></input>
@@ -473,16 +481,25 @@
                                   </div>
                                 </div>
                                 <div class="mb-3"> 
+                                  <button @click="drawTurkeySessions()" v-bind:id="btnchartturkeysessions" type="button" class="btn btn-outline-secondary">
+                                    <span tlang="en">Prepare City Chart</span>
+                                    <span tlang="tr">Şehir Grafiğini hazırla</span>
+                                </button>
                                   <button @click="redrawAll()" id="btnDrawAll" type="button" class="btn btn-outline-secondary">
                                     <i class="fa fa-sync"></i>&nbsp;
                                     <span tlang="en">Plot all charts</span>
                                     <span tlang="tr">Tüm grafikleri hazırla</span>
-                                  </button>                                                                   
+                                  </button>                                                                 
                                 </div>
                                 </form>                             
-                              </div>                              
+                              </div>
+                              <div class="card-header">                                  
+                                <div class="row g-0">
+                                  <div id="livechartturkeysessions"></div>                                                         
+                                </div>
+                            </div>                              
                               <div class="card" style="margin-bottom:1em;" v-for="tt in filteredCurrentTrends" :key="tt.name">
-                                <div class="card-header">
+                                <div class="card-header">                                  
                                     <div class="row g-0">
                                         <div class="col-md-8">
                                         <h5 class="card-title">                                            
