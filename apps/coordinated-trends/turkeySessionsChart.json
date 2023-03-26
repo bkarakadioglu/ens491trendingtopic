@@ -1,10 +1,9 @@
 {
     "config": {
-      "view": {"continuousWidth": 850, "continuousHeight": 450}  },
+      "view": {"continuousWidth": 800, "continuousHeight": 500}  },
     "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
     "data": {
       "values": [
-        
       ]
     },
     "params": [

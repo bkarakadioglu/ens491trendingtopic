@@ -265,37 +265,7 @@
     <body>
         <div id="header-container"></div>  
         <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>        
-        <div id="app2"  class="row my-5 justify-content-center">
-          <div>
-            <input type="text" v-model="searchQueryTrends" placeholder="Search">
-            <ul v-if="this.searchQueryTrends.length > 2">
-              <li v-for="trend in filteredItems" :key="trend.name" @click="addTrend(trend)">
-                {{ trend.name }}
-              </li>
-            </ul>
-            <h2>Selected trends:</h2>
-            <ul>
-              <li v-for="selectedTrend in selectedTrends" :key="selectedTrend.name"  @click="removeTrend(selectedTrend)">
-                {{ selectedTrend.name }}
-              </li>
-            </ul>
-            <button @click="removeAllTrends()">Remove All Trends</button>
-            <button @click="addAllSearched()">Add All Trends In The List</button>
-          </div>
-          <div class="card-body">
-            <button @click="drawTurkeySessionsSelected()" v-bind:id="btnchartturkeysessionsselected" type="button" class="btn btn-secondary">
-                <span tlang="en">Prepare chart</span>
-                <span tlang="tr">Grafik hazırla</span>
-            </button>
-            <div id="livechartturkeysessionsselected">Turkey Sessions Graph Place</div>
-          </div>
-          <div class="card-body">
-            <button @click="drawTurkeySessions()" v-bind:id="btnchartturkeysessions" type="button" class="btn btn-secondary">
-                <span tlang="en">Prepare chart</span>
-                <span tlang="tr">Grafik hazırla</span>
-            </button>
-            <div id="livechartturkeysessions">Turkey Sessions Graph Place</div>
-          </div>
+        <div id="app2"  class="row my-5 justify-content-center">       
           <div class="card-body">
             <button @click="drawFoo()" v-bind:id="btnchartjuly" type="button" class="btn btn-secondary">
                 <span tlang="en">Prepare chart</span>
@@ -313,7 +283,7 @@
         <div class="col-10">         
         <div id="header-container"></div>        
         <div class="container">                                                                                   
-            <img src="turkey.svg" width="1000" height="500">   
+            <div class="justify-content-around"><img src="turkey.svg" width="1000" height="500"> </div>
             <div class="row my-5 justify-content-center" >
                 <div class="col-10">
                     <div id="app">                                                                                                                                              
@@ -372,12 +342,35 @@
                                   </button>                                                                 
                                 </div>
                                 </form>                             
-                              </div>
-                              <div class="card-header">                                  
-                                <div class="row g-0">
-                                  <div id="livechartturkeysessions"></div>                                                         
-                                </div>
-                            </div>                              
+                              </div>                              
+                            <div class="mb-3">
+                              <input class="form-control" type="text" v-model="searchQueryTrends" placeholder="Search">
+                              <ul v-if="this.searchQueryTrends.length > 2">
+                                <li v-for="trend in filteredItems" :key="trend.name" @click="addTrend(trend)">
+                                  {{ trend.name }}
+                                </li>
+                              </ul>
+                              <h2>Selected trends:</h2>
+                              <ul>
+                                <li v-for="selectedTrend in selectedTrends" :key="selectedTrend.name"  @click="removeTrend(selectedTrend)">
+                                  <h5 class="card-title">                                            
+                                    <p>{{ selectedTrend.name }}</p>                                                                                     
+                                </h5>
+                                </li>
+                              </ul>                              
+                            </div>
+                            <button @click="removeAllTrends()">Remove All Trends</button>
+                              <button @click="addAllSearched()">Add All Trends In The List</button>
+                            <div class="card-body">
+                              <button @click="drawTurkeySessionsSelected()" v-bind:id="btnchartturkeysessionsselected" type="button" class="btn btn-secondary">
+                                  <span tlang="en">Prepare chart</span>
+                                  <span tlang="tr">Grafik hazırla</span>
+                              </button>
+                              <div class="card-header">                               
+                                <div id="livechartturkeysessions"></div>                                                         
+                                <div id="livechartturkeysessionsselected"></div>
+                              <br>
+                            </div>                                                            
                               <div class="card" style="margin-bottom:1em;" v-for="tt in filteredCurrentTrends" :key="tt.name">
                                 <div class="card-header">                                  
                                     <div class="row g-0">
