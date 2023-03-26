@@ -7,13 +7,44 @@
         
       ]
     },
+    "params": [
+        {
+          "name": "grid",
+          "select": "interval",
+          "bind": "scales"
+        },
+        {"name": "sessionLengthGt", "value": 100,
+        "bind": {"input": "range", "min": 0, "max": 400, "step": 1,"name": "Session Length Longer Than"} },
+        {"name": "sessionLengthLt", "value": 400,
+        "bind": {"input": "range", "min": 0, "max": 400, "step": 1,"name": "Session Length Shorter Than"} },
+        {"name": "dateGt", "value": 1656620000000,
+        "bind": {"input": "range", "min": 1656620000000, "max": 1672531200000, "step": 1, "name":"Dates Bigger Than"} },
+        {"name": "dateLt", "value": 1672531200000,
+        "bind": {"input": "range", "min": 1656620000000, "max": 1672531200000, "step": 1, "name": "Dates Smaller Than"} },
+        {"name": "freqGt", "value": 0,
+        "bind": {"input": "range", "min": 0, "max": 200, "step": 1, "name": "Frequency"} }
+        
+    ],
     "transform": [
-      {"flatten": ["sessionStart", "sessionEnd","sesLength","sessionMaxVolume"]}
+      {"flatten": ["sessionStart", "sessionEnd","sesLength","sessionMaxVolume"]},
+      {"filter": {"field": "sesLength", "range": [{"expr": "sessionLengthLt"},{"expr":"sessionLengthGt"}]}},
+      {"filter": {"field": "sessionStart", "range": [{"expr": "dateLt"},{"expr":"dateGt"}]}},
+      {"filter": {"field": "sesCount", "gt": {"expr": "freqGt"}}}
     ],
     "mark": {"type": "circle", "tooltip": true},
     "encoding": {
-      "x": { "field": "sessionStart", "type": "temporal","timeUnit":"utcyearmonthdatehoursminutes","axis": {"labelAngle": 45, "maxExtent":1000}},
-      "y": {"field": "sesLength", "type": "quantitative","axis": {"offset":20}},
+      "x": { 
+        "field": "sessionStart", "type": "temporal",
+        "timeUnit":"utcyearmonthdatehoursminutes",
+        "axis": {"labelAngle": 45, "maxExtent":1000,"title":"Dates"},
+        "scale": {"domain": [1656620000000, 1672531200000]}
+      },
+      "y": {
+        "field": "sesLength", 
+        "type": "quantitative",
+        "axis": {"offset":20, "title":"Session Length" },
+        "scale": {"domain": [0, 400]}
+      },
       "color": {
         "field":"name",
         "type":"nominal",
@@ -21,14 +52,16 @@
       },
       "size": {
         "field": "sesLength",
-        "type": "quantitative"
+        "type": "quantitative",
+        "title": "Session Length"
       },
       "tooltip": [
-          {"field": "name", "type": "nominal"},
-          {"field": "sessionStart", "type": "temporal","timeUnit":"utcyearmonthdatehoursminutes"},
-          {"field": "sessionEnd", "type": "temporal","timeUnit":"utcyearmonthdatehoursminutes"},
-          {"field": "sesLength", "type": "quantitative"},
-          {"field": "sessionMaxVolume", "type": "quantitative"}
+          {"field": "name", "type": "nominal", "title":"Name of the Trend"},
+          {"field": "sessionStart", "type": "temporal","timeUnit":"utcyearmonthdatehoursminutes", "title":"Session starts at"},
+          {"field": "sessionEnd", "type": "temporal","timeUnit":"utcyearmonthdatehoursminutes","title":"Session ends at"},
+          {"field": "sesLength", "type": "quantitative","title":"Session length"},
+          {"field": "sessionMaxVolume", "type": "quantitative","title":"Maximum volume of the session:"},
+          {"field": "sesCount", "type": "quantitative", "title":"Times it became trending:"}
         ]
     }
   }
