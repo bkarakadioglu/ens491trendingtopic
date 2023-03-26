@@ -165,9 +165,7 @@
                                       "As Of": this.trends[i].as_of
                                   })
                                 }
-                            }                             
-                          } 
-                      }
+                            }}}
                     }
                     chartd["data"]["values"] = newdata;
                     await vegaEmbed('#livechart-'+cname , chartd).then(function(result) {}).catch(console.error);                            
