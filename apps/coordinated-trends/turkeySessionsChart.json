@@ -13,7 +13,7 @@
           "select": "interval",
           "bind": "scales"
         },
-        {"name": "sessionLengthGt", "value": 100,
+        {"name": "sessionLengthGt", "value": 0,
         "bind": {"input": "range", "min": 0, "max": 400, "step": 1,"name": "Session Length Longer Than"} },
         {"name": "sessionLengthLt", "value": 400,
         "bind": {"input": "range", "min": 0, "max": 400, "step": 1,"name": "Session Length Shorter Than"} },

@@ -71,7 +71,9 @@
                       turkeyJulyChart: null,
                       eskisehirAll: [],
                       turkeySessions:[],
-                      turkeySessionsChart: null 
+                      turkeySessionsChart: null,
+                      searchQueryTrends: '',
+                      selectedTrends: []
                   }
                 },
                 beforeMount: function() {
@@ -194,9 +196,38 @@
                     var chartd = this.turkeySessionsChart;
                     chartd["data"]["values"] = JSON.parse(JSON.stringify(this.turkeySessions));
                     vegaEmbed('#livechartturkeysessions', chartd).then(function(result) {}).catch(console.error);                            
-                  }
+                  },
+                  addAllSearched() {
+                    this.filteredItems.forEach(trend => {
+                      if (!this.selectedTrends.includes(trend)) {
+                        this.selectedTrends.push(trend)
+                      }
+                    })
+                  },
+                  addTrend(trend) {
+                    if (!this.selectedTrends.includes(trend)) {
+                        this.selectedTrends.push(trend);
+                    }else{
+                      alert("Already included");
+                    }
+                  },
+                  removeTrend(trend) {
+                    const index = this.selectedTrends.findIndex(selectedTrend => selectedTrend.name === trend.name)
+                    this.selectedTrends.splice(index, 1);
+                  },
+                  removeAllTrends() {
+                    this.selectedTrends = [];
+                  },
+                  drawTurkeySessionsSelected(){
+                    var chartd = this.turkeySessionsChart;
+                    chartd["data"]["values"] = JSON.parse(JSON.stringify(this.selectedTrends));
+                    vegaEmbed('#livechartturkeysessionsselected', chartd).then(function(result) {}).catch(console.error);                            
+                  },
                 },
-                computed: {                  
+                computed: {    
+                  filteredItems: function() {
+                    return this.turkeySessions.filter(item => item.name.toLowerCase().includes(this.searchQueryTrends.toLowerCase()))
+                  },              
                   filteredCurrentTrends: function(){
                     if(this.asOf){
                         for (let i = 0; i < this.trends.length; i++) {
@@ -242,6 +273,30 @@
         <div id="header-container"></div>  
         <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>        
         <div id="app2"  class="row my-5 justify-content-center">
+          <div>
+            <input type="text" v-model="searchQueryTrends" placeholder="Search">
+            <ul v-if="this.searchQueryTrends.length > 2">
+              <li v-for="trend in filteredItems" :key="trend.name" @click="addTrend(trend)">
+                {{ trend.name }}
+              </li>
+            </ul>
+            <h2>Selected trends:</h2>
+            <ul>
+              <li v-for="selectedTrend in selectedTrends" :key="selectedTrend.name"  @click="removeTrend(selectedTrend)">
+                {{ selectedTrend.name }}
+              </li>
+            </ul>
+            <button @click="removeAllTrends()">Remove All Trends</button>
+            <button @click="addAllSearched()">Add All Trends In The List</button>
+          </div>
+          <div class="card-body">
+            <button @click="drawTurkeySessionsSelected()" v-bind:id="btnchartturkeysessionsselected" type="button" class="btn btn-secondary">
+                <span tlang="en">Prepare chart</span>
+                <span tlang="tr">Grafik hazırla</span>
+            </button>
+            <div id="livechartturkeysessionsselected">Turkey Sessions Graph Place</div>
+          </div>
+
           <div class="card-body">
             <button @click="drawTurkeySessions()" v-bind:id="btnchartturkeysessions" type="button" class="btn btn-secondary">
                 <span tlang="en">Prepare chart</span>
