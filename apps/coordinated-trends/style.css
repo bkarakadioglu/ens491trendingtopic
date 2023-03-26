@@ -2,10 +2,7 @@
     margin:0;
     padding: 0;
 }
-svg {
-    width: 1000px;
-    margin: 0 auto;
-}
+  
 body{
     background-color: rgb(255, 255, 255);
 }
