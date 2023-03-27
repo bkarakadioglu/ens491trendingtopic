@@ -132,11 +132,13 @@
                     vegaEmbed('#' + chartId, chartd).then(function(result) {}).catch(console.error);                            
                   },
                   addAllSearched() {
-                    this.filteredItems.forEach(trend => {
-                      if (!this.selectedTrends.includes(trend)) {
-                        this.selectedTrends.push(trend)
-                      }
-                    })
+                    if(this.filteredItems.length != 0){
+                      this.filteredItems.forEach(trend => {
+                        if (!this.selectedTrends.includes(trend)) {
+                          this.selectedTrends.push(trend)
+                        }
+                      })
+                    }
                   },
                   addTrend(trend) {
                     if (!this.selectedTrends.includes(trend)) {
