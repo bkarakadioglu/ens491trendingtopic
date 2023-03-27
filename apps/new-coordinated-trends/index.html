@@ -66,7 +66,7 @@
                       sessionLengthChart: null,
                       searchQueryTrends: '',
                       selectedTrends: [],
-                      selectedPlace: "Not selected yet",
+                      selectedPlace: [],
                       startDate: '2022-07-01',
                       endDate: '2023-01-01',
                   }
@@ -150,6 +150,9 @@
                   },
                   removeAllTrends() {
                     this.selectedTrends = [];
+                  },
+                  logselected() {
+                    console.log(this.selectedPlace);
                   }
                 },
                 computed: {    
@@ -172,11 +175,13 @@
     </head>
     <body>   
         <div id="header-container"></div>        
-        
         <div class="container">
           <div class="row my-5 justify-content-center" >
               <div class="col-10">
                   <div id="app">
+                    <button @click="logselected()" type="button" class="btn btn-secondary">
+                      Log selected place
+                    </button>
                       <form class="border border-secondary rounded" style="margin-bottom: 2em; padding:1em;">
                           <div class="mb-3">
                             <h3>
@@ -200,7 +205,16 @@
                       </form>
 
                       <form class="border border-secondary rounded" style="margin-bottom: 2em; padding:1em;">
-                        
+                        <div class="mb-3">
+                          <div class="form-container d-flex">
+                            <label for="places" style="width: 150px;"> Place: </label>                           
+                            <select class="form-select" v-model="selectedPlace">
+                              <option selected disabled hidden>Choose place</option>
+                              <option :value="turkeyData">Turkey</option>
+                              <option :value="eskisehirData">Eskişehir</option>
+                            </select> 
+                          </div>
+                        </div>
 
                         <div class="mb-3">
                           <div class="date-container">
@@ -282,7 +296,7 @@
                         </div>
                         <div class="card-body justify-content-center">
                           <div>
-                            <button @click="drawTurkey(startDate, endDate, turkeyData, 'turkeyGraph')" type="button" class="btn btn-secondary">
+                            <button @click="drawTurkey(startDate, endDate, selectedPlace, 'turkeyGraph')" type="button" class="btn btn-secondary">
                               <span tlang="en">Prepare chart</span>
                               <span tlang="tr">Grafik hazırla</span>
                             </button>
@@ -290,9 +304,6 @@
                           <div id="turkeyGraph"></div>
                         </div>
                       </div>
-
-
-
                   </div>
               </div>
           </div>
