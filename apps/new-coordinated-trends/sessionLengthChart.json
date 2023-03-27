@@ -16,7 +16,7 @@
         },
         {"name": "sessionLengthGt", "value": 0,
         "bind": {"input": "range", "min": 0, "max": 100, "step": 1,"name": "Session Length Longer Than  "} },
-        {"name": "sessionLengthLt", "value": 400,
+        {"name": "sessionLengthLt", "value": 100,
         "bind": {"input": "range", "min": 0, "max": 100, "step": 1,"name": "Session Length Shorter Than "} },
         {"name": "freqGt", "value": 0,
         "bind": {"input": "range", "min": 0, "max": 200, "step": 1, "name": "Frequency  "} }
@@ -35,9 +35,9 @@
         "axis": {"labelAngle": 45, "maxExtent":1000,"title":"Dates"}
       },
       "y": {
-        "field": "sesLength", 
+        "field": "sesCount", 
         "type": "quantitative",
-        "axis": {"offset":20, "title":"Session Length" },
+        "axis": {"offset":20, "title":"Frequency" },
         "scale": {}
       },
       "color": {
@@ -46,9 +46,9 @@
         "legend": null
       },
       "size": {
-        "field": "sesLength",
+        "field": "sesCount",
         "type": "quantitative",
-        "title": "Session Length"
+        "title": "Frequency"
       },
       "tooltip": [
           {"field": "name", "type": "nominal", "title":"Name of the Trend"},
