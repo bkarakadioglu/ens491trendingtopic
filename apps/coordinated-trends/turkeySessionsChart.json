@@ -7,6 +7,7 @@
       ]
     },
     "params": [
+        {"name": "select", "select": "point"},
         {
           "name": "grid",
           "select": "interval",
@@ -16,10 +17,6 @@
         "bind": {"input": "range", "min": 0, "max": 400, "step": 1,"name": "Session Length Longer Than"} },
         {"name": "sessionLengthLt", "value": 400,
         "bind": {"input": "range", "min": 0, "max": 400, "step": 1,"name": "Session Length Shorter Than"} },
-        {"name": "dateGt", "value": 1656620000000,
-        "bind": {"input": "range", "min": 1656620000000, "max": 1672531200000, "step": 1, "name":"Dates Bigger Than"} },
-        {"name": "dateLt", "value": 1672531200000,
-        "bind": {"input": "range", "min": 1656620000000, "max": 1672531200000, "step": 1, "name": "Dates Smaller Than"} },
         {"name": "freqGt", "value": 0,
         "bind": {"input": "range", "min": 0, "max": 200, "step": 1, "name": "Frequency"} }
         
@@ -27,7 +24,6 @@
     "transform": [
       {"flatten": ["sessionStart", "sessionEnd","sesLength","sessionMaxVolume"]},
       {"filter": {"field": "sesLength", "range": [{"expr": "sessionLengthLt"},{"expr":"sessionLengthGt"}]}},
-      {"filter": {"field": "sessionStart", "range": [{"expr": "dateLt"},{"expr":"dateGt"}]}},
       {"filter": {"field": "sesCount", "gt": {"expr": "freqGt"}}}
     ],
     "mark": {"type": "circle", "tooltip": true},
@@ -35,8 +31,7 @@
       "x": { 
         "field": "sessionStart", "type": "temporal",
         "timeUnit":"utcyearmonthdatehoursminutes",
-        "axis": {"labelAngle": 45, "maxExtent":1000,"title":"Dates"},
-        "scale": {"domain": [1656620000000, 1672531200000]}
+        "axis": {"labelAngle": 45, "maxExtent":1000,"title":"Dates"}
       },
       "y": {
         "field": "sesLength", 
@@ -60,7 +55,20 @@
           {"field": "sessionEnd", "type": "temporal","timeUnit":"utcyearmonthdatehoursminutes","title":"Session ends at"},
           {"field": "sesLength", "type": "quantitative","title":"Session length"},
           {"field": "sessionMaxVolume", "type": "quantitative","title":"Maximum volume of the session:"},
-          {"field": "sesCount", "type": "quantitative", "title":"Times it became trending:"}
-        ]
+          {"field": "sesCount", "type": "quantitative", "title":"Times it became trending:"}],
+      "fillOpacity": {
+        "condition": {"param": "select", "value": 1},
+        "value": 0.4
+      },
+      "strokeWidth": {
+        "condition": [
+          {
+            "param": "select",
+            "empty": false,
+            "value": 2
+          }
+        ],
+        "value": 0
+      }
     }
   }

@@ -1,7 +1,7 @@
 import json
-filename = "TurkeyAllReadySorted.json"
+filename = "EskisehirSorted.json"
 arrRequired = []
-interval = 3600000 #1 hour
+interval = 10800000 #3 hours
 with open(filename, "r") as jsonFile:
         data = json.load(jsonFile)
         #Get the objects with form {"name": name, "asOf": [date1,date2...], volumes:[123321,123123...]}
@@ -63,6 +63,6 @@ with open(filename, "r") as jsonFile:
                     sessionEnds.append(i[1]) 
             arrRequired.append({ 'name' : singleObject["name"], 'sessionStart' : sessionStarts,
                                 'sessionEnd':sessionEnds, 'sesLength' : sessionLengths,
-                                'sessionMaxVolume': sessionMaxVolume, 'sesCount':len(sessionMaxVolume)})
+                                'sessionMaxVolume': sessionMaxVolume})
 
-        json.dump(arrRequired, open('template7.json','w'))
+        json.dump(arrRequired, open('Eskisehir.json','w'))

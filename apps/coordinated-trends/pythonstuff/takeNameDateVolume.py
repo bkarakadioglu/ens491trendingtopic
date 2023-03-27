@@ -1,6 +1,6 @@
 import json
 import time
-filename = "Turkey_2022-07.json"
+filename = "Eskisehir_All.json"
 
 with open(filename, "r") as jsonFile:
         data = json.load(jsonFile)
@@ -15,4 +15,4 @@ with open(filename, "r") as jsonFile:
         arrRequired = []
         for name in resultVolume:
             arrRequired.append({ 'name' : name, 'asOf' : resultAsof[name], 'volumes' : resultVolume[name]})
-        json.dump(arrRequired, open('newasdasdda2t2a.json','w'))
+        json.dump(arrRequired, open('Eskisehir_All_Timestamped.json','w'))

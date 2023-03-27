@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta content="#Secim2023 Project" name="VRL Lab @ Sabanci University">
+        <meta content="disinformation, social bot detection, coordinated activity detection, dezenformasyon, sosyal bot tespiti, koordinasyon tespiti" name="keywords">
+        <meta content="Copyright (c) 2022 VRL Lab @ Sabanci University" name="Copyright">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta property="og:title" content="#Secim2023 Project @ VRL Lab">
+        <meta property="og:type" content="website">
+        <meta property="og:url" content="http://secim2023.biz">
+        <meta property="og:image" content="http://secim2023.biz/img/secim2023-logo.png">
+        <meta property="og:image:type" content="image/png">
+        <meta property="og:image:width" content="400">
+        <meta property="og:description" content="Bu platform üzerinden 2023 Cumhurbaşkanlığı Seçimleri için gerçekleştirdiğimiz dezenformasyon ve koordinasyonlu aktivite ile mücadele projesine ait raporlar ve makaleler yayınlıyoruz.">
+        <link id="page_favicon" href="/img/favicon.ico" rel="icon" type="image/x-icon" />        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@6.6.6/css/flag-icons.min.css"/>
+        <script src="/js/jquery.min.js"></script>
+        <script src="/js/popper.min.js"></script>
+        <script src="/js/bootstrap.bundle.min.js"></script>
+        <script src="/js/fa-all.js" data-auto-replace-svg="nest"></script>
+        <script src="/js/multilingual.js"></script>
+        <script src="/js/vrllog.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+        <link rel="stylesheet" href="/css/bootstrap.min.css">
+        <link type="text/css" rel="stylesheet" href="/css/hover-min.css" />
+        <link type="text/css" rel="stylesheet" href="/css/academicons.min.css" />
+        <link rel="stylesheet" href="style.css" type="text/css" />
+        
+        <title>#Secim2023</title>
+
+        <script type="text/javascript">
+            $(document).ready(function () {
+                setLang(getCookie('pagelang', 'tr'));
+                $('[data-toggle="tooltip"]').tooltip();
+                $('#header-container').load('/components/header.html', function() {
+                  setLang(getCookie('pagelang', 'tr'));
+                });
+                $('#footer-container').load('/components/footer.html', function() {
+                  setLang(getCookie('pagelang', 'tr'));
+                });                           
+            });
+            $(window).on('load', function () {
+              setLang(getCookie('pagelang', 'tr'));
+            });
+        </script>
+		
+        <!-- Import Vega & Vega-Lite (does not have to be from CDN) -->
+        <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+        <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
+        <!-- Import vega-embed -->
+        <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>        
+        <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.2.30/vue.global.min.js"></script>-->
+        <script src="/js/vue.global.min.js"></script> 
+
+        <script type="module">
+            const { createApp } = Vue
+              createApp({
+                data() {
+                  return {
+                      turkeyData:[],
+                      eskisehirData:[],
+                      sessionLengthChart: null,
+                      searchQueryTrends: '',
+                      selectedTrends: [],
+                      selectedPlace: "Not selected yet",
+                      startDate: '2022-07-01',
+                      endDate: '2023-01-01',
+                  }
+                },
+                beforeMount: function() {
+                      this.getSessionLengthChart();
+                      this.getTurkeyData();  
+                      this.getEskisehirData();           
+                },
+                methods: {
+                  getSessionLengthChart: function(){
+                    $.getJSON('./sessionLengthChart.json',function(json){
+                        this.sessionLengthChart = json;
+                    }.bind(this));                    
+                  }, 
+                  getTurkeyData: function(){
+                    $.getJSON('./data/Turkey.json',function(json){
+                        this.turkeyData = json;
+                    }.bind(this));                    
+                  },
+                  getEskisehirData: function(){
+                    $.getJSON('./data/Eskisehir.json',function(json){
+                        this.eskisehirData = json;
+                    }.bind(this));                    
+                  },
+                  turnDateToTimestamp: function (date) {
+                    return new Date(date).getTime();
+                  },
+                  drawTurkey(startingDate, endDate, dataName, chartId){
+                    var startDateTimestamp = this.turnDateToTimestamp(startingDate);
+                    var endDateTimestamp = this.turnDateToTimestamp(endDate);
+                    //Get the sessions that are between those dates
+                    var dataFilteredByDate = [];                    
+                    for(var i = 0; i < dataName.length; i++){
+                      var sessionStart = [];
+                      var sessionEnd = [];
+                      var sesLength = [];
+                      var sessionMaxVolume = [];
+                      for(var k = 0; k < dataName[i].sessionStart.length; k++){
+                        if(dataName[i].sessionStart[k] > startDateTimestamp 
+                        && dataName[i].sessionEnd[k] < endDateTimestamp ){
+                          sessionStart.push(dataName[i].sessionStart[k]);
+                          sessionEnd.push(dataName[i].sessionEnd[k]);
+                          sesLength.push(dataName[i].sesLength[k]);
+                          sessionMaxVolume.push(dataName[i].sessionMaxVolume[k]); 
+                        }
+                      }
+                      if(sessionEnd.length != 0){
+                        var sesCount = sessionStart.length;
+                        var obj = new Object();
+                        obj.name = dataName[i].name;
+                        obj.sessionStart = sessionStart;
+                        obj.sessionEnd = sessionEnd;
+                        obj.sesLength = sesLength;
+                        obj.sessionMaxVolume = sessionMaxVolume;
+                        obj.sesCount = sesCount;
+                        dataFilteredByDate.push(obj);
+                      }
+                    }
+                    var chartd = this.sessionLengthChart;
+                    chartd["data"]["values"] = JSON.parse(JSON.stringify(dataFilteredByDate));
+                    vegaEmbed('#' + chartId, chartd).then(function(result) {}).catch(console.error);                            
+                  },
+                  addAllSearched() {
+                    this.filteredItems.forEach(trend => {
+                      if (!this.selectedTrends.includes(trend)) {
+                        this.selectedTrends.push(trend)
+                      }
+                    })
+                  },
+                  addTrend(trend) {
+                    if (!this.selectedTrends.includes(trend)) {
+                        this.selectedTrends.push(trend);
+                    }else{
+                      alert("Already included");
+                    }
+                  },
+                  removeTrend(trend) {
+                    const index = this.selectedTrends.findIndex(selectedTrend => selectedTrend.name === trend.name)
+                    this.selectedTrends.splice(index, 1);
+                  },
+                  removeAllTrends() {
+                    this.selectedTrends = [];
+                  }
+                },
+                computed: {    
+                  filteredItems: function() {
+                    return this.turkeyData.filter(item => item.name.toLowerCase().includes(this.searchQueryTrends.toLowerCase()))
+                  },              
+                }
+              }).mount('#app');
+          </script>
+
+        <!-- Google tag (gtag.js) -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-KMQ3V513ZY"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-KMQ3V513ZY');
+        </script>
+
+    </head>
+    <body>   
+        <div id="header-container"></div>        
+        
+        <div class="container">
+          <div class="row my-5 justify-content-center" >
+              <div class="col-10">
+                  <div id="app">
+                      <form class="border border-secondary rounded" style="margin-bottom: 2em; padding:1em;">
+                          <div class="mb-3">
+                            <h3>
+                                <i class="fa fa-chart-bar"></i>&nbsp;
+                                <span tlang="en">Analysis of Trend Topics</span>
+                                <span tlang="tr">Trend Topic Analizi</span>
+                            </h3>
+                          </div>
+                          <div class="mb-3">
+                            <div class="date-container">
+                              <div style="display: flex;">
+                                <label for="start-date" style="width: 150px;"> Start Date: </label>
+                                <input type="date" id="start-date" v-model="startDate" >
+                              </div>
+                              <div style="display: flex;">
+                                <label for="end-date" style="width: 150px;"> End Date: </label>
+                                <input type="date" id="end-date" v-model="endDate" >
+                              </div>
+                            </div>
+                          </div>
+                      </form>
+
+                      <form class="border border-secondary rounded" style="margin-bottom: 2em; padding:1em;">
+                        
+
+                        <div class="mb-3">
+                          <div class="date-container">
+                            <div style="display: flex;">
+                              <label for="start-date-selected" style="width: 150px;"> Start Date: </label>
+                              <input type="date" id="start-date-selected" v-model="startDate" >
+                            </div>
+                            <div style="display: flex;">
+                              <label for="end-date-selected" style="width: 150px;"> End Date: </label>
+                              <input type="date" id="end-datselected" v-model="endDate" >
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="mb-3  d-flex flex-row justify-content-around">
+                          <div class="form-container mb-3">
+                            <h5>Trend searching</h5>
+                            <input type="text" class="form-control mb-3" v-model="searchQueryTrends" placeholder="Search for trends to plot">
+                            <button @click="addAllSearched()" type="button" class="btn btn-outline-secondary mb-3">
+                              <span tlang="en">Select all the trends in the list</span>
+                              <span tlang="tr">Listedeki tüm trendleri seç</span>
+                            </button>
+                          
+                            <ul class="list-group" v-if="this.searchQueryTrends.length > 2">
+                              <li class="list-group-item" v-for="trend in filteredItems" :key="trend.name" @click="addTrend(trend)">
+                                {{ trend.name }}
+                              </li>
+                            </ul>
+                          </div>
+
+                          <div>
+                            <h5>Currently Selected Trends </h5>
+                            <button @click="removeAllTrends()" type="button" class="btn btn-outline-secondary mb-3">
+                              <span tlang="en">Remova all selected trends</span>
+                              <span tlang="tr">Seçili tüm trendleri kaldır</span>
+                            </button>
+                            <ul class="list-group mb-3">
+                              <li class="list-group-item" v-for="selectedTrend in selectedTrends" :key="selectedTrend.name"  @click="removeTrend(selectedTrend)">
+                                {{ selectedTrend.name }}
+                              </li>
+                            </ul>   
+                          </div>
+
+                        </div>
+                      </form>
+
+
+                      <div class="card" style="margin-bottom:1em;" >
+                        <div class="card-header">
+                            <div class="row g-0">
+                                <div class="col-md-8">
+                                  <h5 class="card-title">
+                                      Turkey Selected Trends Data
+                                  </h5>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body  d-flex flex-direction-column justify-content-center">
+                          <div>
+                            <button @click="drawTurkey(startDate, endDate, selectedTrends, 'turkeySelectedGraph')" type="button" class="btn btn-secondary">
+                              <span tlang="en">Prepare chart</span>
+                              <span tlang="tr">Grafik hazırla</span>
+                            </button>
+                          </div>
+                          <div id="turkeySelectedGraph"></div>
+                        </div>
+                      </div>
+                      
+
+                      <div class="card " style="margin-bottom:1em;" >
+                        <div class="card-header">
+                            <div class="row g-0">
+                                <div class="col-md-8">
+                                  <h5 class="card-title">
+                                      Turkey Trends Data
+                                  </h5>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body justify-content-center">
+                          <div>
+                            <button @click="drawTurkey(startDate, endDate, turkeyData, 'turkeyGraph')" type="button" class="btn btn-secondary">
+                              <span tlang="en">Prepare chart</span>
+                              <span tlang="tr">Grafik hazırla</span>
+                            </button>
+                          </div>
+                          <div id="turkeyGraph"></div>
+                        </div>
+                      </div>
+
+
+
+                  </div>
+              </div>
+          </div>
+
+      </div>
+      <div id="footer-container"></div>
+    </body>
+</html>
