@@ -15,9 +15,9 @@
           "bind": "scales"
         },
         {"name": "sessionLengthGt", "value": 0,
-        "bind": {"input": "range", "min": 0, "max": 400, "step": 1,"name": "Session Length Longer Than  "} },
+        "bind": {"input": "range", "min": 0, "max": 100, "step": 1,"name": "Session Length Longer Than  "} },
         {"name": "sessionLengthLt", "value": 400,
-        "bind": {"input": "range", "min": 0, "max": 400, "step": 1,"name": "Session Length Shorter Than "} },
+        "bind": {"input": "range", "min": 0, "max": 100, "step": 1,"name": "Session Length Shorter Than "} },
         {"name": "freqGt", "value": 0,
         "bind": {"input": "range", "min": 0, "max": 200, "step": 1, "name": "Frequency  "} }
         
@@ -38,7 +38,7 @@
         "field": "sesLength", 
         "type": "quantitative",
         "axis": {"offset":20, "title":"Session Length" },
-        "scale": {"domain": [0, 400]}
+        "scale": {}
       },
       "color": {
         "field":"name",
