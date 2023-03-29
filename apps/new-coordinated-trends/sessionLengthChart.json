@@ -1,5 +1,10 @@
 {
     "config": {
+      "tick": {
+        "thickness": 10,
+        "bandSize": 10
+      },
+      
       "view": {"continuousWidth": 600, "continuousHeight": 450}  },
     "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
     "data": {
@@ -18,7 +23,7 @@
         "bind": {"input": "range", "min": 0, "max": 100, "step": 1,"name": "Session Length Longer Than  "} },
         {"name": "sessionLengthLt", "value": 100,
         "bind": {"input": "range", "min": 0, "max": 100, "step": 1,"name": "Session Length Shorter Than "} },
-        {"name": "freqGt", "value": 0,
+        {"name": "freqGt", "value": 25,
         "bind": {"input": "range", "min": 0, "max": 200, "step": 1, "name": "Frequency  "} }
         
     ],
@@ -27,12 +32,20 @@
       {"filter": {"field": "sesLength", "range": [{"expr": "sessionLengthLt"},{"expr":"sessionLengthGt"}]}},
       {"filter": {"field": "sesCount", "gt": {"expr": "freqGt"}}}
     ],
-    "mark": {"type": "circle", "tooltip": true},
+    "mark": {"type": "tick", "tooltip": true},
     "encoding": {
       "x": { 
         "field": "sessionStart", "type": "temporal",
         "timeUnit":"utcyearmonthdatehoursminutes",
-        "axis": {"labelAngle": 45, "maxExtent":1000,"title":"Dates"}
+        "axis": {
+          "labelAngle": 60,
+          "maxExtent":1000,
+          "title":"Dates",
+          "tickCount": 40,
+          "format": "%d.%m.%y %H:%M",
+          "labelPadding": 0,
+          "labelOverlap": false
+        }
       },
       "y": {
         "field": "sesCount", 
@@ -45,16 +58,12 @@
         "type":"nominal",
         "legend": null
       },
-      "size": {
-        "field": "sesCount",
-        "type": "quantitative",
-        "title": "Frequency"
-      },
+      
       "tooltip": [
           {"field": "name", "type": "nominal", "title":"Name of the Trend"},
           {"field": "sessionStart", "type": "temporal","timeUnit":"utcyearmonthdatehoursminutes", "title":"Session starts at"},
           {"field": "sessionEnd", "type": "temporal","timeUnit":"utcyearmonthdatehoursminutes","title":"Session ends at"},
-          {"field": "sesLength", "type": "quantitative","title":"Session length"},
+          {"field": "sesLength", "type": "quantitative", "title":"Session length", "format":".2f"},
           {"field": "sessionMaxVolume", "type": "quantitative","title":"Maximum volume of the session:"},
           {"field": "sesCount", "type": "quantitative", "title":"Times it became trending:"}],
       "fillOpacity": {
