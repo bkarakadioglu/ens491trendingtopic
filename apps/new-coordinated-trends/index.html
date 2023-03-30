@@ -184,7 +184,7 @@
               <div class="col-10">
                   <div id="app">
                     <button @click="logselected()" type="button" class="btn btn-secondary">
-                      Log selected place
+                      Log Selected Place
                     </button>
                       <form class="border border-secondary rounded" style="margin-bottom: 2em; padding:1em;">
                         <div class="mb-3">
@@ -197,9 +197,9 @@
 
                         <div class="mb-3">
                           <div class="form-container d-flex">
-                            <label for="places" style="width: 150px;"> Place: </label>                           
+                            <label for="places" style="width: 150px;"> Place </label>                           
                             <select class="form-select" v-model="selectedPlace">
-                              <option selected disabled hidden>Choose place</option>
+                              <option selected disabled hidden>Choose Place</option>
                               <option :value="turkeyData">Turkey</option>
                               <option :value="eskisehirData" selected>Eskişehir</option>
                             </select> 
@@ -209,11 +209,11 @@
                         <div class="mb-3">
                           <div class="date-container">
                             <div style="display: flex;">
-                              <label for="start-date-selected" style="width: 150px;"> Start Date: </label>
+                              <label for="start-date-selected" style="width: 150px;"> Start Date </label>
                               <input type="date" id="start-date-selected" v-model="startDate" >
                             </div>
                             <div style="display: flex;">
-                              <label for="end-date-selected" style="width: 150px;"> End Date: </label>
+                              <label for="end-date-selected" style="width: 150px;"> End Date </label>
                               <input type="date" id="end-datselected" v-model="endDate" >
                             </div>
                           </div>
@@ -221,8 +221,8 @@
 
                         <div class="mb-3  d-flex flex-row justify-content-around">
                           <div class="form-container mb-3">
-                            <h5>Trend searching</h5>
-                            <input type="text" class="form-control mb-3" v-model="searchQueryTrends" placeholder="Search for trends to plot">
+                            <h5>Trend Search Box</h5>
+                            <input type="text" class="form-control mb-3" v-model="searchQueryTrends" placeholder="Search For Trends to Plot">
                             <button @click="addAllSearched()" type="button" class="btn btn-outline-secondary mb-3">
                               <span tlang="en">Select all the trends in the list</span>
                               <span tlang="tr">Listedeki tüm trendleri seç</span>
@@ -238,8 +238,8 @@
                           <div>
                             <h5>Currently Selected Trends </h5>
                             <button @click="removeAllTrends()" type="button" class="btn btn-outline-secondary mb-3">
-                              <span tlang="en">Remova all selected trends</span>
-                              <span tlang="tr">Seçili tüm trendleri kaldır</span>
+                              <span tlang="en">Remove All Selected Trends</span>
+                              <span tlang="tr">Seçili Tüm Trendleri Kaldır</span>
                             </button>
                             <ul class="list-group mb-3">
                               <li class="list-group-item" v-for="selectedTrend in selectedTrends" :key="selectedTrend.name"  @click="removeTrend(selectedTrend)">
@@ -247,10 +247,8 @@
                               </li>
                             </ul>   
                           </div>
-
                         </div>
                       </form>
-
 
                       <div class="card" style="margin-bottom:1em;" >
                         <div class="card-header">
@@ -265,14 +263,13 @@
                         <div class="card-body  d-flex flex-direction-column justify-content-center">
                           <div>
                             <button @click="draw(startDate, endDate, selectedTrends, 'selectedGraph')" type="button" class="btn btn-secondary">
-                              <span tlang="en">Prepare chart</span>
-                              <span tlang="tr">Grafik hazırla</span>
+                              <span tlang="en">Prepare Chart</span>
+                              <span tlang="tr">Grafik Hazırla</span>
                             </button>
                           </div>
                           <div id="selectedGraph"></div>
                         </div>
-                      </div>
-                      
+                      </div>                      
 
                       <div class="card " style="margin-bottom:1em;" >
                         <div class="card-header">
@@ -287,8 +284,8 @@
                         <div class="card-body d-flex flex-direction-column justify-content-center">
                           <div>
                             <button @click="draw(startDate, endDate, selectedPlace, 'unselectedGraph')" type="button" class="btn btn-secondary">
-                              <span tlang="en">Prepare chart</span>
-                              <span tlang="tr">Grafik hazırla</span>
+                              <span tlang="en">Prepare Chart</span>
+                              <span tlang="tr">Grafik Hazırla</span>
                             </button>
                           </div>
                           <div id="unselectedGraph"></div>
@@ -297,7 +294,6 @@
                   </div>
               </div>
           </div>
-
       </div>
       <div id="footer-container"></div>
     </body>
