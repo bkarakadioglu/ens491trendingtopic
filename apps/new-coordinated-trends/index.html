@@ -132,7 +132,7 @@
                     vegaEmbed('#' + chartId, chartd).then(function(result) {}).catch(console.error);                            
                   },
                   addAllSearched() {
-                    if(this.filteredItems.length > 0){
+                    if(this.filteredItems.length != 0){
                       this.filteredItems.forEach(trend => {
                         if (!this.selectedTrends.includes(trend)) {
                           this.selectedTrends.push(trend)
@@ -155,13 +155,12 @@
                     this.selectedTrends = [];
                   },
                   logselected() {
-                    console.log(this.filteredItems);
+                    console.log(this.selectedPlace);
                   }
                 },
                 computed: {    
                   filteredItems: function() {
-                    return this.selectedPlace.filter(item =>  this.searchQueryTrends.length > 2  
-                    && item.name.toLowerCase().includes(this.searchQueryTrends.toLowerCase()))
+                    return this.selectedPlace.filter(item => item.name.toLowerCase().includes(this.searchQueryTrends.toLowerCase()))
                   },              
                 }
               }).mount('#app');
@@ -180,12 +179,12 @@
     <body>   
         <div id="header-container"></div>        
         <div class="container">
-          <div class="justify-content-around"><img src="turkey.svg" width="1000" height="500"> </div>
+          <div class="svg-container"><img src="turkey.svg" width="1000" height="500"> </div>
           <div class="row my-5 justify-content-center" >
               <div class="col-10">
                   <div id="app">
                     <button @click="logselected()" type="button" class="btn btn-secondary">
-                      Log filtered items
+                      Log selected place
                     </button>
                       <form class="border border-secondary rounded" style="margin-bottom: 2em; padding:1em;">
                         <div class="mb-3">
@@ -239,7 +238,7 @@
                           <div>
                             <h5>Currently Selected Trends </h5>
                             <button @click="removeAllTrends()" type="button" class="btn btn-outline-secondary mb-3">
-                              <span tlang="en">Remove all selected trends</span>
+                              <span tlang="en">Remova all selected trends</span>
                               <span tlang="tr">Seçili tüm trendleri kaldır</span>
                             </button>
                             <ul class="list-group mb-3">

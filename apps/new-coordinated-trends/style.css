@@ -6,7 +6,7 @@ body{
     background-color: rgb(255, 255, 255);
 }
 path.choose {
-    fill: black;
+    fill: yellow !important;
     stroke: #ccc;
     stroke-width: .25;
 }
@@ -42,3 +42,6 @@ select {
     padding: 10px;
     font-size: 1.2rem;
 }
+#svg-container {
+    margin-left: 75px;
+  }
