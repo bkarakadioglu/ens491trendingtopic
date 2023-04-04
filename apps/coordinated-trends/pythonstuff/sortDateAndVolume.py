@@ -1,5 +1,5 @@
 import json
-filename = "Eskisehir_All_Timestamped.json"
+filename = "Turkey_All_Timestamped.json"
 arrRequired = []
 with open(filename, "r") as jsonFile:
         data = json.load(jsonFile)
@@ -9,7 +9,7 @@ with open(filename, "r") as jsonFile:
                 volumesList = singleObject["volumes"]
                 #Zipping it to sort asOf and volumes together by asOf
                 zipped = zip(asOfList, volumesList)
-                zippedSorted = sorted(zipped) 
+                zippedSorted = sorted(zipped, key=lambda x: x[0]) 
                 #Creating the object again in a sorted fashion
                 asOfListSorted = []
                 volumesListSorted = []
