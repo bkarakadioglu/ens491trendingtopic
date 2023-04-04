@@ -32,33 +32,37 @@
       {"filter": {"field": "sesLength", "range": [{"expr": "sessionLengthLt"},{"expr":"sessionLengthGt"}]}},
       {"filter": {"field": "sesCount", "gt": {"expr": "freqGt"}}}
     ],
-    "mark": {"type": "tick", "tooltip": true},
+    "mark": {"type": "bar", "tooltip": true, "height":15},
     "encoding": {
       "x": { 
-        "field": "sessionStart", "type": "temporal",
-        "timeUnit":"utcyearmonthdatehoursminutes",
+        "field": "sessionStart", 
+        "type": "temporal",
+        "timeUnit":"yearmonthdatehoursminutes",
         "axis": {
           "labelAngle": 60,
           "maxExtent":1000,
           "title":"Dates",
-          "tickCount": 40,
+          "tickCount": 20,
           "format": "%d.%m.%y %H:%M",
           "labelPadding": 0,
           "labelOverlap": false
         }
       },
+      "x2":{
+        "field":"sessionEnd",
+        "timeUnit":"yearmonthdatehoursminutes"
+      },
       "y": {
         "field": "sesCount", 
         "type": "quantitative",
         "axis": {"offset":20, "title":"Frequency" },
-        "scale": {}
+        "scale": {"domain": [0, 200]}
       },
       "color": {
         "field":"name",
         "type":"nominal",
         "legend": null
       },
-      
       "tooltip": [
           {"field": "name", "type": "nominal", "title":"Name of the Trend"},
           {"field": "sessionStart", "type": "temporal","timeUnit":"utcyearmonthdatehoursminutes", "title":"Session starts at"},
