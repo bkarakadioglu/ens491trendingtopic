@@ -4,7 +4,8 @@ import json
 import time
 from unidecode import unidecode
 
-#Here is the order: turnJsonsToJson, removeCreatedAt, mergeJsonFiles, takeNameDateVolume, sortDateAndVolume, sessionCreator
+#Here is the order: turnJsonsToJson, removeCreatedAt, mergeJsonFiles, turn names to lowercase(combinesSameNames),
+#  takeNameDateVolume, sortDateAndVolume, sessionCreator
 filenames = ["Eskişehir_2023-01.jsons", "Eskişehir_2023-02.jsons", "Eskişehir_2023-03.jsons"]
 allFile = "Eskişehir_All.json"
 lowercasedFile = "Eskişehir_All_Lowercased.json"

@@ -150,6 +150,7 @@
                   },
                   addTrend(trend) {
                     if (!this.selectedTrends.includes(trend)) {
+                        console.log(trend)
                         this.selectedTrends.push(trend);
                     }else{
                       alert("Already included");
@@ -168,7 +169,7 @@
                 },
                 computed: {    
                   filteredItems: function() {
-                    return this.selectedPlace.filter(item => item.name.toLowerCase().includes(this.searchQueryTrends.toLowerCase()))
+                    return this.selectedPlace.filter(item => item.name.includes(this.searchQueryTrends.toLowerCase()))
                   },              
                 }
               }).mount('#app');
