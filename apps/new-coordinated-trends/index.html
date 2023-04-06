@@ -70,6 +70,10 @@
                       selectedPlace: [],
                       startDate: '2022-12-31',
                       endDate: '2023-04-10',
+
+                      ittifakData: [],
+                      ittifakChart: null
+
                   }
                 },
                 beforeMount: function() {
@@ -78,8 +82,18 @@
                       this.getEskisehirData();  
                       this.getAnkaraData();           
          
+                      this.getItfk();
+                        
                 },
                 methods: {
+                  getItfk: function(){
+                    $.getJSON('./itfkChart.json',function(json){
+                        this.ittifakChart = json;
+                    }.bind(this));   
+                    $.getJSON('./data/itfkData.json',function(json){
+                        this.ittifakData = json;
+                    }.bind(this));                 
+                  }, 
                   getSessionLengthChart: function(){
                     $.getJSON('./sessionLengthChart.json',function(json){
                         this.sessionLengthChart = json;
@@ -103,6 +117,45 @@
                   },
                   turnDateToTimestamp: function (date) {
                     return new Date(date).getTime();
+                  },
+                  drawItfk(startingDate, endDate, dataName, chartId){
+                    console.log(this.ittifakData)
+                    console.log(this.ittifakChart)
+                    var startDateTimestamp = this.turnDateToTimestamp(startingDate);
+                    var endDateTimestamp = this.turnDateToTimestamp(endDate);
+                    //Get the sessions that are between those dates
+                    var dataFilteredByDate = [];                    
+                    for(var i = 0; i < dataName.length; i++){
+                      var sessionStart = [];
+                      var sessionEnd = [];
+                      var sesLength = [];
+                      var sessionMaxVolume = [];
+                      for(var k = 0; k < dataName[i].sessionStart.length; k++){
+                        if(dataName[i].sessionStart[k] > startDateTimestamp 
+                        && dataName[i].sessionEnd[k] < endDateTimestamp ){
+                          sessionStart.push(dataName[i].sessionStart[k]);
+                          sessionEnd.push(dataName[i].sessionEnd[k]);
+                          sesLength.push(dataName[i].sesLength[k]);
+                          sessionMaxVolume.push(dataName[i].sessionMaxVolume[k]); 
+                        }
+                      }
+                      if(sessionEnd.length != 0){
+                        var sesCount = sessionStart.length;
+                        var obj = new Object();
+                        obj.name = dataName[i].name;
+                        obj.sessionStart = sessionStart;
+                        obj.sessionEnd = sessionEnd;
+                        obj.sesLength = sesLength;
+                        obj.sessionMaxVolume = sessionMaxVolume;
+                        obj.sesCount = sesCount;
+                        obj.ittifak = dataName[i].ittifak;
+                        dataFilteredByDate.push(obj);
+                      }
+                    }
+                    console.log(dataName[1])
+                    var chartd = this.ittifakChart;
+                    chartd["data"]["values"] = JSON.parse(JSON.stringify(dataFilteredByDate));
+                    vegaEmbed('#' + chartId, chartd).then(function(result) {}).catch(console.error);                            
                   },
                   draw(startingDate, endDate, dataName, chartId){
                     var startDateTimestamp = this.turnDateToTimestamp(startingDate);
@@ -164,7 +217,17 @@
                     this.selectedTrends = [];
                   },
                   logselected() {
-                    console.log(this.selectedPlace);
+                    console.log(this.selectedTrends);
+                    const blob = new Blob([JSON.stringify(this.selectedTrends)], { type: 'application/json' });
+                    const url = URL.createObjectURL(blob);
+                    const link = document.createElement('a');
+                    link.href = url;
+                    link.download = 'data.json';
+                    link.style.display = 'none';
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    URL.revokeObjectURL(url);
                   }
                 },
                 computed: {    
@@ -299,6 +362,26 @@
                             </button>
                           </div>
                           <div id="unselectedGraph"></div>
+                        </div>
+                      </div>
+                      <div class="card " style="margin-bottom:1em;" >
+                        <div class="card-header">
+                            <div class="row g-0">
+                                <div class="col-md-8">
+                                  <h5 class="card-title">
+                                    Ittifak Comparison
+                                  </h5>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body d-flex flex-direction-column justify-content-center">
+                          <div>
+                            <button @click="drawItfk(startDate, endDate, ittifakData, 'itfkGraph')" type="button" class="btn btn-secondary">
+                              <span tlang="en">Prepare Chart</span>
+                              <span tlang="tr">Grafik Hazırla</span>
+                            </button>
+                          </div>
+                          <div id="itfkGraph"></div>
                         </div>
                       </div>
                   </div>
