@@ -108,10 +108,9 @@ for df in dfs:
 
         corr_coef = np.corrcoef(allSesLengths, allSessionMaxVolumes)[0, 1]
 
-        fig, axs = plt.subplots(2, 2, figsize=(8, 8))
+        """ fig, axs = plt.subplots(2, 2, figsize=(8, 8))
 
         fig.suptitle(cities[count])
-        count += 1
         fig.tight_layout(pad=5.0)
 
         axs[0,0].scatter(allSesLengths, allSessionMaxVolumes)
@@ -143,12 +142,13 @@ for df in dfs:
                 if df['mean_sesLength'][i] > 27 or  df['sesCount'][i] > 50:
                         axs[1,1].text(df['mean_sesLength'][i], df['sesCount'][i], df['name'][i])
 
-        plt.show()
+        plt.show() """
 
         print("Corr between mean session max volume and session count", df['mean_sessionMaxVolume'].corr(df['sesCount']))
         print("Corr between mean session length and session count", df['mean_sesLength'].corr(df['sesCount']))
         print("Corr between total session length and session count", df['total_sesLength'].corr(df['sesCount']))
         print("Corr between mean session max volume and mean session length", df['mean_sessionMaxVolume'].corr(df['mean_sesLength']))
+        count += 1
 
 
 for i in range(len(dfs)):
@@ -172,3 +172,7 @@ sns.heatmap(sameTrendsPercentageMatrix, annot=True, fmt=".2f", cmap='YlGnBu',
              vmin=95)
 plt.title("Percentage of Same Trends in Cities")
 plt.show()
+
+sameTrendsForAnkaraAndTurkey = set(dfs[0]['name']).intersection(set(dfs[2]['name']))
+differentTrendsInIstanbul = set(dfs[8]['name']).difference(sameTrendsForAnkaraAndTurkey)
+print("Different trends in Istanbul", differentTrendsInIstanbul)
