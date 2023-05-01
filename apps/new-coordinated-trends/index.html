@@ -420,7 +420,12 @@
               type="button"
               class="btn btn-secondary"
             >
-              Download Selected Trends as Json
+              <span tlang="en">
+                Download Selected Trends as Json
+              </span>
+              <span tlang="tr">
+                Seçilen Trendleri Json Olarak İndir
+              </span>
             </button>
             <form
               class="border border-secondary rounded"
@@ -433,10 +438,12 @@
                   <span tlang="tr">Trend Topic Analizi</span>
                 </h3>
               </div>
-
               <div class="mb-3">
                 <div class="form-container d-flex">
-                  <label for="places" style="width: 150px"> Place </label>
+                  <label for="places" style="width: 150px"> 
+                    <span tlang="en">Place</span>
+                    <span tlang="tr">Lokasyon</span>
+                  </label>
                   <select class="form-select" v-model="selectedPlace">
                     <option selected disabled hidden>Choose Place</option>
                     <option :value="turkeyData">Turkey</option>
@@ -455,12 +462,12 @@
                   </select>
                 </div>
               </div>
-
               <div class="mb-3">
                 <div class="date-container">
                   <div style="display: flex">
                     <label for="start-date-selected" style="width: 150px">
-                      Start Date
+                      <span tlang="en">Start Date</span>
+                      <span tlang="tr">Başlangıç Tarihi</span>
                     </label>
                     <input
                       type="date"
@@ -470,7 +477,8 @@
                   </div>
                   <div style="display: flex">
                     <label for="end-date-selected" style="width: 150px">
-                      End Date
+                      <span tlang="en">End Date</span>
+                      <span tlang="tr">Bitiş Tarihi</span>
                     </label>
                     <input type="date" id="end-datselected" v-model="endDate" />
                   </div>
@@ -479,7 +487,8 @@
 
               <div class="mb-3 d-flex flex-row justify-content-around">
                 <div class="form-container mb-3">
-                  <h5>Trend Search Box</h5>
+                  <h5><span tlang="en">Trend Search Box</span></h5>
+                  <h5><span tlang="tr">Trend Arama</span></h5>
                   <input
                     type="search"
                     class="form-control mb-3"
@@ -511,7 +520,8 @@
                 </div>
 
                 <div>
-                  <h5>Currently Selected Trends</h5>
+                  <h5><span tlang="en">Currently Selected Trends</span></h5>
+                  <h5><span tlang="tr">Seçilen Trendler</span></h5>
                   <button
                     @click="removeAllTrends()"
                     type="button"
@@ -538,7 +548,10 @@
               <div class="card-header">
                 <div class="row g-0">
                   <div class="col-md-8">
-                    <h5 class="card-title">Graph Selected Trends</h5>
+                    <h5 class="card-title">
+                      <span tlang="en">Graph Selected Trends</span>
+                      <span tlang="tr">Seçilen Trend Grafiği</span>
+                    </h5>
                   </div>
                 </div>
               </div>
@@ -564,14 +577,14 @@
                 <div class="row g-0">
                   <div class="col-md-8">
                     <h5 class="card-title">
-                      Graph All Trends For That City (Regardless of Trend
-                      Selection)
+                      <span tlang="en">Graph All Trends For That City 
+                        (Regardless of Trend Selection)</span>
+                      <span tlang="tr">Lokasyon Trend Grafiği</span>
                     </h5>
                   </div>
                 </div>
               </div>
-              <div
-                class="card-body d-flex flex-direction-column justify-content-center"
+              <div class="card-body d-flex flex-direction-column justify-content-center"
               >
                 <div>
                   <button
@@ -590,7 +603,10 @@
               <div class="card-header">
                 <div class="row g-0">
                   <div class="col-md-8">
-                    <h5 class="card-title">Ittifak Comparison</h5>
+                    <h5 class="card-title">
+                      <span tlang="en">Ittifak Comparison</span>
+                      <span tlang="tr">Ittifak Karşılaştırma</span>
+                  </h5>
                   </div>
                 </div>
               </div>
