@@ -487,8 +487,8 @@
 
               <div class="mb-3 d-flex flex-row justify-content-around">
                 <div class="form-container mb-3">
-                  <h5><span tlang="en">Trend Search Box</span></h5>
-                  <h5><span tlang="tr">Trend Arama</span></h5>
+                  <h5><span tlang="en">Trend Search Box <i class="fas fa-search" style="margin:9px;"></i> </span></h5>
+                  <h5><span tlang="tr">Trend Arama <i class="fas fa-search" style="margin:9px;"></i> </span></h5>
                   <input
                     type="search"
                     class="form-control mb-3"
@@ -503,19 +503,19 @@
                     <span tlang="en">Select all the trends in the list</span>
                     <span tlang="tr">Listedeki tüm trendleri seç</span>
                   </button>
-
                   <ul
                     class="list-group"
                     v-if="this.searchQueryTrends.length > 2"
                   >
                     <li
-                      class="list-group-item"
-                      v-for="trend in filteredItems"
-                      :key="trend.name"
-                      @click="addTrend(trend)"
-                    >
-                      {{ trend.name }}
-                    </li>
+                    class="list-group-item custom-list-item d-flex justify-content-between align-items-center"
+                    v-for="trend in filteredItems"
+                    :key="trend.name"
+                    @click="addTrend(trend)"
+                  >
+                    <span class="trend-name">{{ trend.name }}</span>
+                    <i class ="fa fa-plus" style="color:green"></i>
+                    </li>                                 
                   </ul>
                 </div>
 
@@ -532,14 +532,16 @@
                   </button>
                   <ul class="list-group mb-3">
                     <li
-                      class="list-group-item"
+                    class="list-group-item custom-list-item d-flex justify-content-between align-items-center"
                       v-for="selectedTrend in selectedTrends"
                       :key="selectedTrend.name"
                       @click="removeTrend(selectedTrend)"
                     >
-                      {{ selectedTrend.name }}
+                    <span class="trend-name">{{selectedTrend.name}}</span>
+                      <i class="fa fa-trash" style="color:red"></i>
                     </li>
                   </ul>
+                  
                 </div>
               </div>
             </form>
@@ -604,7 +606,7 @@
                 <div class="row g-0">
                   <div class="col-md-8">
                     <h5 class="card-title">
-                      <span tlang="en">Ittifak Comparison</span>
+                      <span tlang="en">Alliance Comparison</span>
                       <span tlang="tr">Ittifak Karşılaştırma</span>
                   </h5>
                   </div>
