@@ -65,11 +65,11 @@
       },
       "tooltip": [
           {"field": "name", "type": "nominal", "title":"Name of the Trend"},
-          {"field": "sessionStart", "type": "temporal","timeUnit":"utcyearmonthdatehoursminutes", "title":"Session starts at"},
-          {"field": "sessionEnd", "type": "temporal","timeUnit":"utcyearmonthdatehoursminutes","title":"Session ends at"},
-          {"field": "sesLength", "type": "quantitative", "title":"Session length", "format":".2f"},
-          {"field": "sessionMaxVolume", "type": "quantitative","title":"Maximum volume of the session:"},
-          {"field": "sesCount", "type": "quantitative", "title":"Times it became trending:"}],
+          {"field": "sessionStart", "type": "temporal","timeUnit":"utcyearmonthdatehoursminutes", "title":"TT Start Time"},
+          {"field": "sessionEnd", "type": "temporal","timeUnit":"utcyearmonthdatehoursminutes","title":"TT End Time"},
+          {"field": "sesLength", "type": "quantitative", "title":"TT Duration", "format":".2f"},
+          {"field": "sessionMaxVolume", "type": "quantitative","title":"Maximum Tweet Volume"},
+          {"field": "sesCount", "type": "quantitative", "title":"Frequency of Trend"}],
       "fillOpacity": {
         "condition": {"param": "select", "value": 1},
         "value": 0.4
