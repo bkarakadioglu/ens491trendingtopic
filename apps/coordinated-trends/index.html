@@ -1,406 +1,650 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta content="#Secim2023 Project" name="VRL Lab @ Sabanci University">
-        <meta content="disinformation, social bot detection, coordinated activity detection, dezenformasyon, sosyal bot tespiti, koordinasyon tespiti" name="keywords">
-        <meta content="Copyright (c) 2022 VRL Lab @ Sabanci University" name="Copyright">
-        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <meta property="og:title" content="#Secim2023 Project @ VRL Lab">
-        <meta property="og:type" content="website">
-        <meta property="og:url" content="http://secim2023.biz">
-        <meta property="og:image" content="http://secim2023.biz/img/secim2023-logo.png">
-        <meta property="og:image:type" content="image/png">
-        <meta property="og:image:width" content="400">
-        <meta property="og:description" content="Bu platform üzerinden 2023 Cumhurbaşkanlığı Seçimleri için gerçekleştirdiğimiz dezenformasyon ve koordinasyonlu aktivite ile mücadele projesine ait raporlar ve makaleler yayınlıyoruz.">
-        <link id="page_favicon" href="/img/favicon.ico" rel="icon" type="image/x-icon" />        
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@6.6.6/css/flag-icons.min.css"/>
-        <script src="/js/jquery.min.js"></script>
-        <script src="/js/popper.min.js"></script>
-        <script src="/js/bootstrap.bundle.min.js"></script>
-        <script src="/js/fa-all.js" data-auto-replace-svg="nest"></script>
-        <script src="/js/multilingual.js"></script>
-        <script src="/js/vrllog.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-        <link rel="stylesheet" href="/css/bootstrap.min.css">
-        <link type="text/css" rel="stylesheet" href="/css/hover-min.css" />
-        <link type="text/css" rel="stylesheet" href="/css/academicons.min.css" />
-        <link rel="stylesheet" href="style.css" type="text/css" />
-        
-        <title>#Secim2023</title>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta content="#Secim2023 Project" name="VRL Lab @ Sabanci University" />
+    <meta
+      content="disinformation, social bot detection, coordinated activity detection, dezenformasyon, sosyal bot tespiti, koordinasyon tespiti"
+      name="keywords"
+    />
+    <meta
+      content="Copyright (c) 2022 VRL Lab @ Sabanci University"
+      name="Copyright"
+    />
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+    <meta property="og:title" content="#Secim2023 Project @ VRL Lab" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="http://secim2023.biz" />
+    <meta
+      property="og:image"
+      content="http://secim2023.biz/img/secim2023-logo.png"
+    />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="400" />
+    <meta
+      property="og:description"
+      content="Bu platform üzerinden 2023 Cumhurbaşkanlığı Seçimleri için gerçekleştirdiğimiz dezenformasyon ve koordinasyonlu aktivite ile mücadele projesine ait raporlar ve makaleler yayınlıyoruz."
+    />
+    <link
+      id="page_favicon"
+      href="/img/favicon.ico"
+      rel="icon"
+      type="image/x-icon"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@6.6.6/css/flag-icons.min.css"
+    />
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/popper.min.js"></script>
+    <script src="/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/fa-all.js" data-auto-replace-svg="nest"></script>
+    <script src="/js/multilingual.js"></script>
+    <script src="/js/vrllog.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
-        <script type="text/javascript">
-            $(document).ready(function () {
-                setLang(getCookie('pagelang', 'tr'));
-                $('[data-toggle="tooltip"]').tooltip();
-                $('#header-container').load('/components/header.html', function() {
-                  setLang(getCookie('pagelang', 'tr'));
-                });
-                $('#footer-container').load('/components/footer.html', function() {
-                  setLang(getCookie('pagelang', 'tr'));
-                });                           
-            });
-            $(window).on('load', function () {
-              setLang(getCookie('pagelang', 'tr'));
-            });
-        </script>
-		
-        <!-- Import Vega & Vega-Lite (does not have to be from CDN) -->
-        <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
-        <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
-        <!-- Import vega-embed -->
-        <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>        
-        <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.2.30/vue.global.min.js"></script>-->
-        <script src="/js/vue.global.min.js"></script> 
+    <link rel="stylesheet" href="/css/bootstrap.min.css" />
+    <link type="text/css" rel="stylesheet" href="/css/hover-min.css" />
+    <link type="text/css" rel="stylesheet" href="/css/academicons.min.css" />
+    <link rel="stylesheet" href="style.css" type="text/css" />
 
-        <script type="module">
-            const { createApp } = Vue
-              createApp({
-                data() {
-                  return {
-                      trends: [],
-                      currentTrends: [],                      
-                      searchValue : '',   
-                      asOf : "",
-                      createdAt:"", 
-                      chart: null,
-                      turkeyJuly: [],
-                      turkeyJulyChart: null,
-                      eskisehirAll: [],
-                      turkeySessions:[],
-                      turkeySessionsChart: null,
-                      searchQueryTrends: '',
-                      selectedTrends: []
-                  }
-                },
-                beforeMount: function() {
-                      this.TurkeyJson();
-                      this.getJson();   
-                      this.getTurkeyJuly();  
-                      this.getEskisehir();  
-                      this.getTurkeyJulyChart();
-                      this.getTurkeySessionsChart();            
-                      this.getTurkeySessions();            
-                },
-                methods: {
-                  getTurkeySessionsChart: function(){
-                    $.getJSON('./data/TurkeySessions.json',function(json){
-                        this.turkeySessions = json;
-                    }.bind(this));                    
-                  },
-                  getTurkeySessions: function(){
-                    $.getJSON('./turkeySessionsChart.json',function(json){
-                        this.turkeySessionsChart = json;
-                    }.bind(this));                    
-                  },
-                  getEskisehir: function(){
-                    $.getJSON('./data/Eskisehir_All.json',function(json){
-                        this.eskisehirAll = json;
-                    }.bind(this));                    
-                  },
-                  getTurkeyJuly: function(){
-                    $.getJSON('./data/TurkeyJuly.json',function(json){
-                        this.turkeyJuly = json;
-                    }.bind(this));                    
-                  },
-                  getTurkeyJulyChart: function(){
-                    $.getJSON('./turkeyJulyChart.json',function(json){
-                        this.turkeyJulyChart = json;
-                    }.bind(this));                    
-                  },
-                  getJson: function(){
-                    $.getJSON('./trend-temp-chart.json',function(json){
-                        this.chart = json;
-                    }.bind(this));                    
-                  },
-                  IzmirJson: function(){
-                      $.getJSON('./data/Izmir.json',function(json){
-                          this.trends = json;
-                          this.currentTrends = this.trends[0].trends_list;
-                      }.bind(this));                      
-                  },
-                  IstanbulJson: function(){
-                      $.getJSON('./data/Istanbul.json',function(json){
-                          this.trends = json;
-                          this.currentTrends = this.trends[0].trends_list;
-                      }.bind(this));                                         
-                  },                  
-                  TurkeyJson: function(){
-                      $.getJSON('./data/Turkey.json',function(json){
-                          this.trends = json;
-                          this.currentTrends = this.trends[0].trends_list;
-                      }.bind(this));
-                  },
-                  turnTimestampToDate: function (timestamp) {
-                    return new Date(timestamp).toLocaleDateString("tr-tr");
-                  },
-                  turnAsofToDate: function (asOf) {
-                    let year = asOf.substr(0,4);
-                    let month = asOf.substr(5,2);
-                    let day = asOf.substr(8,2);
-                    return day + "." + month + "." + year; 
-                  },                                   
-                  async redraw(targetId) {
-                    console.log(targetId)
-                    var cnameUnchanged = targetId.replace('btnchart-','')
-                    var cname = cnameUnchanged.replaceAll(' ','').replaceAll('#','');
-                    var chartd = this.chart;
-                    var newdata = [];
-                    for (let i = 0;  i < this.currentTrends.length; i++) {
-                      if (this.currentTrends[i].name == cnameUnchanged){
-                          var tweetVolume = this.currentTrends[i]['tweet_volume'];                                                    
-                          //Loop through the trends data which has the trends list for every date
-                          for (let i = 0; i < this.trends.length; i++) { 
-                            //console.log("There are ", this.trends.length," trends in the data") 
-                            //Loop through the trends list for that date
-                            for (let k = 0; k < this.trends[i].trends_list.length; k++) {
-                                //console.log(this.trends[i].trends_list.length) 
-                                //If the trends match for that button, add it to the data
-                                if(this.trends[i].trends_list[k].name == cnameUnchanged){
-                                  newdata.push({
-                                      //"name": this.trends[i].trends_list[k].name,
-                                      "Tweet Volume": this.trends[i].trends_list[k].tweet_volume,
-                                      "As Of": this.trends[i].as_of
-                                  })
-                                }
-                            }}}
-                    }
-                    chartd["data"]["values"] = newdata;
-                    await vegaEmbed('#livechart-'+cname , chartd).then(function(result) {}).catch(console.error);                            
-                    $('#' + targetId.replaceAll('#','')).hide();
-                    $('#trendTimeCount-'+cname).append("Number of times this topic became trending: ", newdata.length);
-                    setLang(getCookie('pagelang', 'tr'));
-                  },
-                  async redrawAll(){
-                    for (let i = 0; i < this.currentTrends.length; i++) {
-                      await this.redraw(this.currentTrends[i].name);
-                    } 
-                  },
-                  drawFoo(){
-                    var chartd = this.turkeyJulyChart;
-                    chartd["data"]["values"] = JSON.parse(JSON.stringify(this.turkeyJuly));
-                    vegaEmbed('#livechartjuly', chartd).then(function(result) {}).catch(console.error);                            
-                  },
-                  drawEskisehir(){
-                    var chartd = this.turkeyJulyChart;
-                    chartd["data"]["values"] = JSON.parse(JSON.stringify(this.eskisehirAll));
-                    vegaEmbed('#livecharteskisehir', chartd).then(function(result) {}).catch(console.error);                            
-                  },
-                  drawTurkeySessions(){
-                    var chartd = this.turkeySessionsChart;
-                    chartd["data"]["values"] = JSON.parse(JSON.stringify(this.turkeySessions));
-                    vegaEmbed('#livechartturkeysessions', chartd).then(function(result) {}).catch(console.error);                            
-                  },
-                  addAllSearched() {
-                    this.filteredItems.forEach(trend => {
-                      if (!this.selectedTrends.includes(trend)) {
-                        this.selectedTrends.push(trend)
-                      }
-                    })
-                  },
-                  addTrend(trend) {
-                    if (!this.selectedTrends.includes(trend)) {
-                        this.selectedTrends.push(trend);
-                    }else{
-                      alert("Already included");
-                    }
-                  },
-                  removeTrend(trend) {
-                    const index = this.selectedTrends.findIndex(selectedTrend => selectedTrend.name === trend.name)
-                    this.selectedTrends.splice(index, 1);
-                  },
-                  removeAllTrends() {
-                    this.selectedTrends = [];
-                  },
-                  drawTurkeySessionsSelected(){
-                    var chartd = this.turkeySessionsChart;
-                    chartd["data"]["values"] = JSON.parse(JSON.stringify(this.selectedTrends));
-                    vegaEmbed('#livechartturkeysessionsselected', chartd).then(function(result) {}).catch(console.error);                            
-                  },
-                },
-                computed: {    
-                  filteredItems: function() {
-                    return this.turkeySessions.filter(item => item.name.toLowerCase().includes(this.searchQueryTrends.toLowerCase()))
-                  },              
-                  filteredCurrentTrends: function(){
-                    if(this.asOf){
-                        for (let i = 0; i < this.trends.length; i++) {
-                            if(this.turnTimestampToDate(this.trends[i].date) == this.turnAsofToDate(this.asOf)){
-                            this.currentTrends = this.trends[i].trends_list;
-                            }
-                        }  
-                        console.log('Filtered Current Trends is Working')                    
-                        if (this.searchValue != '' && this.searchValue) {
-                        this.currentTrends =  this.currentTrends.filter((item) => {
-                            return  item.name
-                            .toUpperCase()
-                            .includes(this.searchValue.toUpperCase())
-                        })}
-                    }else{
-                      this.currentTrends = this.trends[0].trends_list;
-                      if (this.searchValue != '' && this.searchValue) {
-                        this.currentTrends =  this.currentTrends.filter((item) => {
-                            return  item.name
-                            .toUpperCase()
-                            .includes(this.searchValue.toUpperCase())
-                        })}
-                    }                
-                    return this.currentTrends
-                  }
+    <title>#Secim2023</title>
+
+    <script type="text/javascript">
+      $(document).ready(function () {
+        setLang(getCookie("pagelang", "tr"));
+        $('[data-toggle="tooltip"]').tooltip();
+        $("#header-container").load("/components/header.html", function () {
+          setLang(getCookie("pagelang", "tr"));
+        });
+        $("#footer-container").load("/components/footer.html", function () {
+          setLang(getCookie("pagelang", "tr"));
+        });
+      });
+      $(window).on("load", function () {
+        setLang(getCookie("pagelang", "tr"));
+      });
+    </script>
+
+    <!-- Import Vega & Vega-Lite (does not have to be from CDN) -->
+    <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
+    <!-- Import vega-embed -->
+    <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.2.30/vue.global.min.js"></script>-->
+    <script src="/js/vue.global.min.js"></script>
+
+    <script type="module">
+      const { createApp } = Vue;
+      createApp({
+        data() {
+          return {
+            turkeyData: [],
+            adanaData: [],
+            ankaraData: [],
+            antalyaData: [],
+            bursaData: [],
+            diyarbakirData: [],
+            eskisehirData: [],
+            gaziantepData: [],
+            istanbulData: [],
+            izmirData: [],
+            kayseriData: [],
+            konyaData: [],
+            mersinData: [],
+            sessionLengthChart: null,
+            searchQueryTrends: "",
+            selectedTrends: [],
+            selectedPlace: [],
+            startDate: "2022-12-31",
+            endDate: "2023-04-10",
+
+            ittifakData: [],
+            ittifakChart: null,
+          };
+        },
+        beforeMount: function () {
+          this.getSessionLengthChart();
+          this.getTurkeyData();
+          this.getAdanaData();
+          this.getAnkaraData();
+          this.getAntalyaData();
+          this.getBursaData();
+          this.getDiyarbakirData();
+          this.getEskisehirData();
+          this.getGaziantepData();
+          this.getIstanbulData();
+          this.getIzmirData();
+          this.getKayseriData();
+          this.getKonyaData();
+          this.getMersinData();
+
+          this.getItfk();
+        },
+        methods: {
+          getItfk: function () {
+            $.getJSON(
+              "./itfkChart.json",
+              function (json) {
+                this.ittifakChart = json;
+              }.bind(this)
+            );
+            $.getJSON(
+              "./data/itfkData.json",
+              function (json) {
+                this.ittifakData = json;
+              }.bind(this)
+            );
+          },
+          getSessionLengthChart: function () {
+            $.getJSON(
+              "./sessionLengthChart.json",
+              function (json) {
+                this.sessionLengthChart = json;
+              }.bind(this)
+            );
+          },
+          getTurkeyData: function () {
+            $.getJSON(
+              "./data/Turkey.json",
+              function (json) {
+                this.turkeyData = json;
+                this.selectedPlace = this.turkeyData;
+              }.bind(this)
+            );
+          },
+          getAdanaData: function () {
+            $.getJSON(
+              "./data/Adana.json",
+              function (json) {
+                this.adanaData = json;
+              }.bind(this)
+            );
+          },
+          getAnkaraData: function () {
+            $.getJSON(
+              "./data/Ankara.json",
+              function (json) {
+                this.ankaraData = json;
+              }.bind(this)
+            );
+          },
+          getAntalyaData: function () {
+            $.getJSON(
+              "./data/Antalya.json",
+              function (json) {
+                this.antalyaData = json;
+              }.bind(this)
+            );
+          },
+          getBursaData: function () {
+            $.getJSON(
+              "./data/Bursa.json",
+              function (json) {
+                this.bursaData = json;
+              }.bind(this)
+            );
+          },
+          getDiyarbakirData: function () {
+            $.getJSON(
+              "./data/Diyarbakir.json",
+              function (json) {
+                this.diyarbakirData = json;
+              }.bind(this)
+            );
+          },
+          getEskisehirData: function () {
+            $.getJSON(
+              "./data/Eskisehir.json",
+              function (json) {
+                this.eskisehirData = json;
+              }.bind(this)
+            );
+          },
+          getGaziantepData: function () {
+            $.getJSON(
+              "./data/Gaziantep.json",
+              function (json) {
+                this.gaziantepData = json;
+              }.bind(this)
+            );
+          },
+          getIstanbulData: function () {
+            $.getJSON(
+              "./data/Istanbul.json",
+              function (json) {
+                this.istanbulData = json;
+              }.bind(this)
+            );
+          },
+          getIzmirData: function () {
+            $.getJSON(
+              "./data/Izmir.json",
+              function (json) {
+                this.izmirData = json;
+              }.bind(this)
+            );
+          },
+          getKayseriData: function () {
+            $.getJSON(
+              "./data/Kayseri.json",
+              function (json) {
+                this.kayseriData = json;
+              }.bind(this)
+            );
+          },
+          getKonyaData: function () {
+            $.getJSON(
+              "./data/Konya.json",
+              function (json) {
+                this.konyaData = json;
+              }.bind(this)
+            );
+          },
+          getMersinData: function () {
+            $.getJSON(
+              "./data/Mersin.json",
+              function (json) {
+                this.mersinData = json;
+              }.bind(this)
+            );
+          },
+          turnDateToTimestamp: function (date) {
+            return new Date(date).getTime();
+          },
+          drawItfk(startingDate, endDate, dataName, chartId) {
+            console.log(this.ittifakData);
+            console.log(this.ittifakChart);
+            var startDateTimestamp = this.turnDateToTimestamp(startingDate);
+            var endDateTimestamp = this.turnDateToTimestamp(endDate);
+            //Get the sessions that are between those dates
+            var dataFilteredByDate = [];
+            for (var i = 0; i < dataName.length; i++) {
+              var sessionStart = [];
+              var sessionEnd = [];
+              var sesLength = [];
+              var sessionMaxVolume = [];
+              for (var k = 0; k < dataName[i].sessionStart.length; k++) {
+                if (
+                  dataName[i].sessionStart[k] > startDateTimestamp &&
+                  dataName[i].sessionEnd[k] < endDateTimestamp
+                ) {
+                  sessionStart.push(dataName[i].sessionStart[k]);
+                  sessionEnd.push(dataName[i].sessionEnd[k]);
+                  sesLength.push(dataName[i].sesLength[k]);
+                  sessionMaxVolume.push(dataName[i].sessionMaxVolume[k]);
                 }
-              }).mount('#app2');
-          </script>
-        <!-- Google tag (gtag.js) -->
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-KMQ3V513ZY"></script>
-        <script>
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
-          gtag('config', 'G-KMQ3V513ZY');
-        </script>
-    </head>
-    <body>
-        <div id="header-container"></div>  
-        <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>        
-        <div id="app2"  class="row my-5 justify-content-center">       
-          <div class="card-body">
-            <button @click="drawFoo()" v-bind:id="btnchartjuly" type="button" class="btn btn-secondary">
-                <span tlang="en">Prepare chart</span>
-                <span tlang="tr">Grafik hazırla</span>
+              }
+              if (sessionEnd.length != 0) {
+                var sesCount = sessionStart.length;
+                var obj = new Object();
+                obj.name = dataName[i].name;
+                obj.sessionStart = sessionStart;
+                obj.sessionEnd = sessionEnd;
+                obj.sesLength = sesLength;
+                obj.sessionMaxVolume = sessionMaxVolume;
+                obj.sesCount = sesCount;
+                obj.ittifak = dataName[i].ittifak;
+                dataFilteredByDate.push(obj);
+              }
+            }
+            console.log(dataName[1]);
+            var chartd = this.ittifakChart;
+            chartd["data"]["values"] = JSON.parse(
+              JSON.stringify(dataFilteredByDate)
+            );
+            vegaEmbed("#" + chartId, chartd)
+              .then(function (result) {})
+              .catch(console.error);
+          },
+          draw(startingDate, endDate, dataName, chartId) {
+            var startDateTimestamp = this.turnDateToTimestamp(startingDate);
+            var endDateTimestamp = this.turnDateToTimestamp(endDate);
+            //Get the sessions that are between those dates
+            var dataFilteredByDate = [];
+            for (var i = 0; i < dataName.length; i++) {
+              var sessionStart = [];
+              var sessionEnd = [];
+              var sesLength = [];
+              var sessionMaxVolume = [];
+              //Get the total session length
+              const totalSesLength = dataName[i].sesLength.reduce(
+                (partialSum, a) => partialSum + a,
+                0
+              );
+              for (var k = 0; k < dataName[i].sessionStart.length; k++) {
+                if (
+                  dataName[i].sessionStart[k] > startDateTimestamp &&
+                  dataName[i].sessionEnd[k] < endDateTimestamp
+                ) {
+                  sessionStart.push(dataName[i].sessionStart[k]);
+                  sessionEnd.push(dataName[i].sessionEnd[k]);
+                  sesLength.push(dataName[i].sesLength[k]);
+                  sessionMaxVolume.push(dataName[i].sessionMaxVolume[k]);
+                }
+              }
+              if (sessionEnd.length != 0 && totalSesLength > 10) {
+                var sesCount = sessionStart.length;
+                var obj = new Object();
+                obj.name = dataName[i].name;
+                obj.sessionStart = sessionStart;
+                obj.sessionEnd = sessionEnd;
+                obj.sesLength = sesLength;
+                obj.sessionMaxVolume = sessionMaxVolume;
+                obj.sesCount = sesCount;
+                dataFilteredByDate.push(obj);
+              }
+            }
+            var chartd = this.sessionLengthChart;
+            chartd["data"]["values"] = JSON.parse(
+              JSON.stringify(dataFilteredByDate)
+            );
+            vegaEmbed("#" + chartId, chartd)
+              .then(function (result) {})
+              .catch(console.error);
+          },
+          addAllSearched() {
+            if (this.filteredItems.length != 0) {
+              this.filteredItems.forEach((trend) => {
+                if (!this.selectedTrends.includes(trend)) {
+                  this.selectedTrends.push(trend);
+                }
+              });
+            }
+          },
+          addTrend(trend) {
+            if (!this.selectedTrends.includes(trend)) {
+              console.log(trend);
+              this.selectedTrends.push(trend);
+            } else {
+              alert("Already included");
+            }
+          },
+          removeTrend(trend) {
+            const index = this.selectedTrends.findIndex(
+              (selectedTrend) => selectedTrend.name === trend.name
+            );
+            this.selectedTrends.splice(index, 1);
+          },
+          removeAllTrends() {
+            this.selectedTrends = [];
+          },
+          downloadSelected() {
+            console.log(this.selectedTrends);
+            const blob = new Blob([JSON.stringify(this.selectedTrends)], {
+              type: "application/json",
+            });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement("a");
+            link.href = url;
+            link.download = "data.json";
+            link.style.display = "none";
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+          },
+        },
+        computed: {
+          filteredItems: function () {
+            return this.selectedPlace.filter((item) =>
+              item.name.includes(this.searchQueryTrends.toLowerCase())
+            );
+          },
+        },
+      }).mount("#app");
+    </script>
+
+    <!-- Google tag (gtag.js) -->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-KMQ3V513ZY"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+      gtag("config", "G-KMQ3V513ZY");
+    </script>
+  </head>
+  <body>
+    <div id="header-container"></div>
+    <div class="container">
+      <div class="svg-container">
+        <img src="turkey.svg" width="1000" height="500" />
+      </div>
+      <div class="row my-5 justify-content-center">
+        <div class="col-10">
+          <div id="app">
+            <button
+              @click="downloadSelected()"
+              type="button"
+              class="btn btn-secondary"
+            >
+              <span tlang="en"> Download Selected Trends as Json </span>
+              <span tlang="tr"> Seçilen Trendleri Json Olarak İndir </span>
             </button>
-            <div id="livechartjuly">Turkey Graph Place</div>
-          </div>  
-          <div class="card-body">
-            <button @click="drawEskisehir()" v-bind:id="btncharteskisehir" type="button" class="btn btn-secondary">
-                <span tlang="en">Prepare chart</span>
-                <span tlang="tr">Grafik hazırla</span>
-            </button>
-            <div id="livecharteskisehir">Eskisehir Graph Place</div>
-          </div>
-        <div class="col-10">         
-        <div id="header-container"></div>        
-        <div class="container">                                                                                   
-            <div class="justify-content-around"><img src="turkey.svg" width="1000" height="500"> </div>
-            <div class="row my-5 justify-content-center" >
-                <div class="col-10">
-                    <div id="app">                                                                                                                                              
-                        <form class="border border-secondary rounded" style="margin-bottom: 2em; padding:1em;">
-                        <div class="border border-secondary rounded" style="margin-bottom: 2em; padding:1em;">
-                            <div class="mb-3">
-                            <h3>
-                                <i class="fa fa-chart-bar"></i>&nbsp;
-                                <span tlang="en">Analysis of Trend Topics</span>
-                                <span tlang="tr">Trend Topic Analizi</span>
-                                <!--https://codepen.io/thaekeh/pen/PoGJRKQ-->
-                            </h3>
-                            </div>
-                            <div class="card-body"> 
-                              <div class="date-container">
-                                    <label for="cities" style="width: 150px;"> City: </label>                           
-                                    <select name="cities" id="cities">
-                                      <option value="turkey">Turkey</option>                                                                   
-                                      <option value="adana">Adana</option>
-                                      <option value="antalya">Antalya</option>
-                                      <option value="bursa">Bursa</option>
-                                      <option value="diyarbakir">Diyarbakır</option>
-                                      <option value="eskisehir">Eskişehir</option>
-                                      <option value="gaziantep">Gaziantep</option>
-                                      <option value="istanbul">Istanbul</option>
-                                      <option value="izmir">Izmir</option>
-                                      <option value="kayseri">Kayseri</option>
-                                      <option value="konya">Konya</option>
-                                      <option value="mersin">Mersin</option> 
-                                    </select>                                      
-                                  </form>                                              
-                              </div>
-                            </div>
-                            <div class="date-container">                                
-                                <div style="display: flex;">
-                                  <label for="asof" style="width: 150px;"> As Of: </label>
-                                  <input type="date" id="asof" name="trip-start" value="2022-07-22" v-model="asOf" >
-                                </div>                                
-                                <div class="mb-3">
-                                  <div tlang="en" style="display: flex;">
-                                    <input class="form-control" type="text" v-model="searchValue" placeholder="Search by #hashtag, tt" id="search-input"></input>
-                                  </div>
-                                  <div tlang="tr" style="display: flex;">
-                                    <input class="form-control" type="text" v-model="searchValue" placeholder="Hashtag ile ara" id="search-input"></input>
-                                  </div>
-                                </div>
-                                <div class="mb-3"> 
-                                  <button @click="drawTurkeySessions()" v-bind:id="btnchartturkeysessions" type="button" class="btn btn-outline-secondary">
-                                    <span tlang="en">Prepare City Chart</span>
-                                    <span tlang="tr">Şehir Grafiğini hazırla</span>
-                                </button>
-                                  <button @click="redrawAll()" id="btnDrawAll" type="button" class="btn btn-outline-secondary">
-                                    <i class="fa fa-sync"></i>&nbsp;
-                                    <span tlang="en">Plot all charts</span>
-                                    <span tlang="tr">Tüm grafikleri hazırla</span>
-                                  </button>                                                                 
-                                </div>
-                                </form>                             
-                              </div>                              
-                            <div class="mb-3">
-                              <input class="form-control" type="text" v-model="searchQueryTrends" placeholder="Search">
-                              <ul v-if="this.searchQueryTrends.length > 2">
-                                <li v-for="trend in filteredItems" :key="trend.name" @click="addTrend(trend)">
-                                  {{ trend.name }}
-                                </li>
-                              </ul>
-                              <h2>Selected trends:</h2>
-                              <ul>
-                                <li v-for="selectedTrend in selectedTrends" :key="selectedTrend.name"  @click="removeTrend(selectedTrend)">
-                                  <h5 class="card-title">                                            
-                                    <p>{{ selectedTrend.name }}</p>                                                                                     
-                                </h5>
-                                </li>
-                              </ul>                              
-                            </div>
-                            <button @click="removeAllTrends()">Remove All Trends</button>
-                              <button @click="addAllSearched()">Add All Trends In The List</button>
-                            <div class="card-body">
-                              <button @click="drawTurkeySessionsSelected()" v-bind:id="btnchartturkeysessionsselected" type="button" class="btn btn-secondary">
-                                  <span tlang="en">Prepare chart</span>
-                                  <span tlang="tr">Grafik hazırla</span>
-                              </button>
-                              <div class="card-header">                               
-                                <div id="livechartturkeysessions"></div>                                                         
-                                <div id="livechartturkeysessionsselected"></div>
-                              <br>
-                            </div>                                                            
-                              <div class="card" style="margin-bottom:1em;" v-for="tt in filteredCurrentTrends" :key="tt.name">
-                                <div class="card-header">                                  
-                                    <div class="row g-0">
-                                        <div class="col-md-8">
-                                        <h5 class="card-title">                                            
-                                            <p>{{tt.name}}</p>                                                                                     
-                                        </h5>
-                                        <h6 class="card-subtitle mb-2 text-muted">
-                                            <span tlang="en">Volume:</span>                                           
-                                            <span tlang="tr">Hacim (Volume):</span> 
-                                            {{tt.tweet_volume}}                                           
-                                        </h6>
-                                        </div>                       
-                                    </div>
-                                </div>
-                                <div class="card-body">
-                                    <button @click="redraw($event.currentTarget.id)" v-bind:id="'btnchart-' + tt.name" type="button" class="btn btn-secondary">
-                                        <span tlang="en">Prepare chart</span>
-                                        <span tlang="tr">Grafik hazırla</span>
-                                    </button>
-                                    <div class="followerchart" v-bind:id="'chart-' + tt.name.replaceAll(' ','').replaceAll('#','')" :data=JSON.stringify(tt.tweet_volume)></div>                                   
-                                    <p class="h6" v-bind:id="'trendTimeCount-' + tt.name.replaceAll(' ','').replaceAll('#','')"></p>
-                                    <div v-bind:id="'livechart-' + tt.name.replaceAll(' ','').replaceAll('#','')"></div>
-                                </div>
-                              </div>                                                                                                         
-                        </form>                                    
-                      </div>
-                    </div>
+            <form
+              class="border border-secondary rounded"
+              style="margin-bottom: 2em; padding: 1em"
+            >
+              <div class="mb-3">
+                <h3>
+                  <i class="fa fa-chart-bar"></i>&nbsp;
+                  <span tlang="en">Analysis of Trend Topics</span>
+                  <span tlang="tr">Trend Topic Analizi</span>
+                </h3>
+              </div>
+              <div class="mb-3">
+                <div class="form-container d-flex">
+                  <label for="places" style="width: 150px">
+                    <span tlang="en">Place</span>
+                    <span tlang="tr">Lokasyon</span>
+                  </label>
+                  <select class="form-select" v-model="selectedPlace">
+                    <option selected disabled hidden>Choose Place</option>
+                    <option :value="turkeyData">Turkey</option>
+                    <option :value="adanaData" selected>Adana</option>
+                    <option :value="ankaraData" selected>Ankara</option>
+                    <option :value="antalyaData" selected>Antalya</option>
+                    <option :value="bursaData" selected>Bursa</option>
+                    <option :value="diyarbakirData" selected>Diyarbakır</option>
+                    <option :value="eskisehirData" selected>Eskişehir</option>
+                    <option :value="gaziantepData" selected>Gaziantep</option>
+                    <option :value="istanbulData" selected>İstanbul</option>
+                    <option :value="izmirData" selected>İzmir</option>
+                    <option :value="kayseriData" selected>Kayseri</option>
+                    <option :value="konyaData" selected>Konya</option>
+                    <option :value="mersinData" selected>Mersin</option>
+                  </select>
                 </div>
-            </div>        
+              </div>
+              <div class="mb-3">
+                <div class="date-container">
+                  <div style="display: flex">
+                    <label for="start-date-selected" style="width: 150px">
+                      <span tlang="en">Start Date</span>
+                      <span tlang="tr">Başlangıç Tarihi</span>
+                    </label>
+                    <input
+                      type="date"
+                      id="start-date-selected"
+                      v-model="startDate"
+                    />
+                  </div>
+                  <div style="display: flex">
+                    <label for="end-date-selected" style="width: 150px">
+                      <span tlang="en">End Date</span>
+                      <span tlang="tr">Bitiş Tarihi</span>
+                    </label>
+                    <input type="date" id="end-datselected" v-model="endDate" />
+                  </div>
+                </div>
+              </div>
+
+              <div class="mb-3 d-flex flex-row justify-content-around">
+                <div class="form-container mb-3">
+                  <h5>
+                    <span tlang="en"
+                      >Trend Search Box
+                      <i class="fas fa-search" style="margin: 9px"></i>
+                    </span>
+                  </h5>
+                  <h5>
+                    <span tlang="tr"
+                      >Trend Arama
+                      <i class="fas fa-search" style="margin: 9px"></i>
+                    </span>
+                  </h5>
+                  <input
+                    type="search"
+                    class="form-control mb-3"
+                    v-model="searchQueryTrends"
+                    placeholder="Search For Trends to Plot"
+                  />
+                  <button
+                    @click="addAllSearched()"
+                    type="button"
+                    class="btn btn-outline-secondary mb-3"
+                  >
+                    <span tlang="en">Select all the trends in the list</span>
+                    <span tlang="tr">Listedeki tüm trendleri seç</span>
+                  </button>
+                  <ul
+                    class="list-group"
+                    v-if="this.searchQueryTrends.length > 2"
+                  >
+                    <li
+                      class="list-group-item custom-list-item d-flex justify-content-between align-items-center"
+                      v-for="trend in filteredItems"
+                      :key="trend.name"
+                      @click="addTrend(trend)"
+                    >
+                      <span class="trend-name">{{ trend.name }}</span>
+                      <i class="fa fa-plus" style="color: green"></i>
+                    </li>
+                  </ul>
+                </div>
+
+                <div>
+                  <h5><span tlang="en">Currently Selected Trends</span></h5>
+                  <h5><span tlang="tr">Seçilen Trendler</span></h5>
+                  <button
+                    @click="removeAllTrends()"
+                    type="button"
+                    class="btn btn-outline-secondary mb-3"
+                  >
+                    <span tlang="en">Remove All Selected Trends</span>
+                    <span tlang="tr">Seçili Tüm Trendleri Kaldır</span>
+                  </button>
+                  <ul class="list-group mb-3">
+                    <li
+                      class="list-group-item custom-list-item d-flex justify-content-between align-items-center"
+                      v-for="selectedTrend in selectedTrends"
+                      :key="selectedTrend.name"
+                      @click="removeTrend(selectedTrend)"
+                    >
+                      <span class="trend-name">{{selectedTrend.name}}</span>
+                      <i class="fa fa-trash" style="color: red"></i>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </form>
+
+            <div class="card" style="margin-bottom: 1em">
+              <div class="card-header">
+                <div class="row g-0">
+                  <div class="col-md-8">
+                    <h5 class="card-title">
+                      <span tlang="en">Graph Selected Trends</span>
+                      <span tlang="tr">Seçilen Trend Grafiği</span>
+                    </h5>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="card-body d-flex flex-direction-column justify-content-center"
+              >
+                <div>
+                  <button
+                    @click="draw(startDate, endDate, selectedTrends, 'selectedGraph')"
+                    type="button"
+                    class="btn btn-secondary"
+                  >
+                    <span tlang="en">Prepare Chart</span>
+                    <span tlang="tr">Grafik Hazırla</span>
+                  </button>
+                </div>
+                <div id="selectedGraph"></div>
+              </div>
+            </div>
+
+            <div class="card" style="margin-bottom: 1em">
+              <div class="card-header">
+                <div class="row g-0">
+                  <div class="col-md-8">
+                    <h5 class="card-title">
+                      <span tlang="en"
+                        >Graph All Trends For That City (Regardless of Trend
+                        Selection)</span
+                      >
+                      <span tlang="tr">Lokasyon Trend Grafiği</span>
+                    </h5>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="card-body d-flex flex-direction-column justify-content-center"
+              >
+                <div>
+                  <button
+                    @click="draw(startDate, endDate, selectedPlace, 'unselectedGraph')"
+                    type="button"
+                    class="btn btn-secondary"
+                  >
+                    <span tlang="en">Prepare Chart</span>
+                    <span tlang="tr">Grafik Hazırla</span>
+                  </button>
+                </div>
+                <div id="unselectedGraph"></div>
+              </div>
+            </div>
+            <div class="card" style="margin-bottom: 1em">
+              <div class="card-header">
+                <div class="row g-0">
+                  <div class="col-md-8">
+                    <h5 class="card-title">
+                      <span tlang="en">Alliance Comparison</span>
+                      <span tlang="tr">Ittifak Karşılaştırma</span>
+                    </h5>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="card-body d-flex flex-direction-column justify-content-center"
+              >
+                <div>
+                  <button
+                    @click="drawItfk(startDate, endDate, ittifakData, 'itfkGraph')"
+                    type="button"
+                    class="btn btn-secondary"
+                  >
+                    <span tlang="en">Prepare Chart</span>
+                    <span tlang="tr">Grafik Hazırla</span>
+                  </button>
+                </div>
+                <div id="itfkGraph"></div>
+              </div>
+            </div>
+          </div>
         </div>
-        <div id="footer-container"></div>
-    </body>
+      </div>
+    </div>
+    <div id="footer-container"></div>
+  </body>
 </html>

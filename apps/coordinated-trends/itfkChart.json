@@ -1,0 +1,149 @@
+{
+  "config": {
+    "tick": {
+      "thickness": 10,
+      "bandSize": 10
+    },
+
+    "view": { "continuousWidth": 600, "continuousHeight": 450 }
+  },
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "data": {
+    "values": []
+  },
+  "params": [
+    { "name": "select", "select": "point" },
+    {
+      "name": "grid",
+      "select": "interval",
+      "bind": "scales"
+    },
+    {
+      "name": "sessionLengthGt",
+      "value": 0,
+      "bind": {
+        "input": "range",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "name": "Session Length Longer Than  "
+      }
+    },
+    {
+      "name": "sessionLengthLt",
+      "value": 100,
+      "bind": {
+        "input": "range",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "name": "Session Length Shorter Than "
+      }
+    },
+    {
+      "name": "freqGt",
+      "value": 2,
+      "bind": {
+        "input": "range",
+        "min": 0,
+        "max": 200,
+        "step": 1,
+        "name": "Frequency  "
+      }
+    }
+  ],
+  "transform": [
+    {
+      "flatten": ["sessionStart", "sessionEnd", "sesLength", "sessionMaxVolume"]
+    },
+    {
+      "filter": {
+        "field": "sesLength",
+        "range": [{ "expr": "sessionLengthLt" }, { "expr": "sessionLengthGt" }]
+      }
+    },
+    { "filter": { "field": "sesCount", "gt": { "expr": "freqGt" } } }
+  ],
+  "mark": { "type": "bar", "tooltip": true, "height": 15 },
+  "encoding": {
+    "x": {
+      "field": "sessionStart",
+      "type": "temporal",
+      "timeUnit": "yearmonthdatehoursminutes",
+      "axis": {
+        "labelAngle": 60,
+        "maxExtent": 1000,
+        "title": "Dates",
+        "tickCount": 20,
+        "format": "%d.%m.%y %H:%M",
+        "labelPadding": 0,
+        "labelOverlap": false
+      }
+    },
+    "x2": {
+      "field": "sessionEnd",
+      "timeUnit": "yearmonthdatehoursminutes"
+    },
+    "y": {
+      "field": "sesCount",
+      "type": "quantitative",
+      "axis": { "offset": 20, "title": "Frequency" },
+      "scale": { "domain": [0, 20] }
+    },
+    "color": {
+      "field": "ittifak",
+      "type": "nominal",
+      "scale": { "range": ["#ff0000", "#facf0a", "#0945eb"] },
+      "legend": {
+        "title": "Alliances",
+        "values": ["Red - Millet", "Yellow - Cumhur", "Blue - Memleket"],
+        "labelExpr": "datum.value"
+      }
+    },
+    "tooltip": [
+      { "field": "name", "type": "nominal", "title": "Name of the Trend" },
+      {
+        "field": "sessionStart",
+        "type": "temporal",
+        "timeUnit": "utcyearmonthdatehoursminutes",
+        "title": "Session starts at"
+      },
+      {
+        "field": "sessionEnd",
+        "type": "temporal",
+        "timeUnit": "utcyearmonthdatehoursminutes",
+        "title": "Session ends at"
+      },
+      {
+        "field": "sesLength",
+        "type": "quantitative",
+        "title": "Session length",
+        "format": ".2f"
+      },
+      {
+        "field": "sessionMaxVolume",
+        "type": "quantitative",
+        "title": "Maximum volume of the session:"
+      },
+      {
+        "field": "sesCount",
+        "type": "quantitative",
+        "title": "Times it became trending:"
+      }
+    ],
+    "fillOpacity": {
+      "condition": { "param": "select", "value": 1 },
+      "value": 0.4
+    },
+    "strokeWidth": {
+      "condition": [
+        {
+          "param": "select",
+          "empty": false,
+          "value": 2
+        }
+      ],
+      "value": 0
+    }
+  }
+}

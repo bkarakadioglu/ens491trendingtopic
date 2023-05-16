@@ -1,0 +1,32 @@
+{
+  "config": {
+    "view": {"continuousWidth": 1500, "continuousHeight": 500}  },
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "data": {
+    "values": [
+      
+    ]
+  },
+  "transform": [
+    {"flatten": ["asOf", "volumes"]}
+  ],
+  "mark": {"type": "square", "tooltip": true},
+  "encoding": {
+    "x": { "field": "asOf", "type": "temporal","timeUnit":"utcyearmonthdatehoursminutes","axis": {"labelAngle": 45, "maxExtent":1000}},
+    "y": {"field": "volumes", "type": "quantitative","axis": {"offset":20}},
+    "color": {
+      "field":"name",
+      "type":"nominal",
+      "legend": null
+    },
+    "size": {
+      "field": "volumes",
+      "type": "quantitative"
+    },
+    "tooltip": [
+        {"field": "name", "type": "nominal"},
+        {"field": "asOf", "type": "temporal","timeUnit":"utcyearmonthdatehoursminutes"},
+        {"field": "volumes", "type": "quantitative"}
+      ]
+  }
+}

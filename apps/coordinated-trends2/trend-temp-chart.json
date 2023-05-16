@@ -1,0 +1,37 @@
+{
+  "config": {
+    "view": {"continuousWidth": 600, "continuousHeight": 500},
+    "axis": {"grid": false}
+  },
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "data": {
+    "values": [
+      
+    ]
+  },
+  "layer": [
+  {
+    "mark": {"type": "circle", "tooltip":true},
+    "encoding": {
+      "x": { "field": "As Of", "type": "temporal","timeUnit":"monthdate", "axis": {"labelAngle": 45, "maxExtent":1000}},
+      "y": {"field": "Tweet Volume", "type": "quantitative", "axis": {"offset":20}},
+      "size": {"value": 100},
+      "color": {"value": "red"}
+    }
+  },
+  {
+    
+    "mark": {"type": "rule", "tooltip":true},
+    "encoding": {
+      "y": {
+        "aggregate": "mean",
+        "field": "Tweet Volume",
+        "type": "quantitative"
+      },
+      "color": {"value": "firebrick"},
+      "size": {"value": 2}
+    }
+  }
+  ]
+
+}
