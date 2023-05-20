@@ -300,6 +300,12 @@
               .catch(console.error);
           },
           draw(startingDate, endDate, dataName, chartId) {
+            if (chartId === "selectedGraph") {
+              if (this.selectedTrends.length === 0) {
+                alert("Secilen trend bulunmuyor");
+                return;
+              }
+            }
             var startDateTimestamp = this.turnDateToTimestamp(startingDate);
             var endDateTimestamp = this.turnDateToTimestamp(endDate);
             //Get the sessions that are between those dates
