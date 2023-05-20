@@ -390,7 +390,7 @@
         computed: {
           filteredItems: function () {
             return this.selectedPlace.filter((item) =>
-              item.name.includes(this.searchQueryTrends.toLowerCase())
+              item.name.includes(this.searchQueryTrends.toLowerCase()) && !this.selectedTrends.includes(item)
             );
           },
         },
