@@ -42,7 +42,7 @@
     },
     {
       "name": "freqGt",
-      "value": 2,
+      "value": 0,
       "bind": {
         "input": "range",
         "min": 0,
